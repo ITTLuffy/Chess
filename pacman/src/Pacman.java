@@ -1,4 +1,3 @@
-import javax.swing.JPanel;
 import javax.swing.JFrame;
 
 public class Pacman {
@@ -34,6 +33,8 @@ public class Pacman {
 
         f.pack(); // sistemo la size se necessario
 
+        c.requestFocus(); // per il keylistener
+        
         // rendo visibile
         f.setVisible(true);
 

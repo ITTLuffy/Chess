@@ -2,11 +2,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements ActionListener, KeyListener {
 
     private int righe = 21;
     private int colonne = 19;
@@ -25,11 +30,6 @@ public class Canvas extends JPanel {
     private Image immaginePacmanDown;
     private Image immaginePacmanSinistra;
     private Image immaginePacmanDestra;
-
-    ArrayList<Blocco> muri_array;
-    ArrayList<Blocco> cibo_array;
-    ArrayList<Blocco> fant_array;
-    Blocco pacman;
 
     private String[] mappaMuretti = {
             "XXXXXXXXXXXXXXXXXXX",
@@ -55,9 +55,18 @@ public class Canvas extends JPanel {
             "XXXXXXXXXXXXXXXXXXX"
     };
 
+    ArrayList<Blocco> muri_array;
+    ArrayList<Blocco> cibo_array;
+    ArrayList<Blocco> fant_array;
+    Blocco pacman;
+
+    Timer gameLoop;
+
     public Canvas() {
         setPreferredSize(new Dimension(w, h));
         setBackground(Color.black);
+        addKeyListener(this); // aggiungo il keylistener
+        setFocusable(true); // per il keylistener
 
         // carico le immagini
         // immagineMuretti
@@ -76,9 +85,10 @@ public class Canvas extends JPanel {
         immaginePacmanDestra = new ImageIcon(getClass().getResource("./immagini/pacmanRight.png")).getImage();
 
         init();
-        System.out.println(muri_array.size());
-        System.out.println(cibo_array.size());
-        System.out.println(fant_array.size());
+        gameLoop = new Timer(50, this); // 50 = delay this = pacman
+
+        gameLoop.start(); // inizia il timer
+
     }
 
     public void init() {
@@ -142,6 +152,24 @@ public class Canvas extends JPanel {
         for (Blocco cibo : cibo_array) {
             g.fillRect(cibo.x, cibo.y, cibo.w, cibo.h);
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println("KeyEvent: " + e.getKeyCode());
     }
 
 }
