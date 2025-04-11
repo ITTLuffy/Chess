@@ -132,6 +132,24 @@ public class Canvas extends JPanel implements ActionListener, KeyListener {
 
     }
 
+    public void cammina() {
+        // movimento pacman
+        pacman.x += pacman.velocitàX;
+        pacman.y += pacman.velocitàY;
+
+        // collisione con i muri
+        for (Blocco muro : muri_array) {
+            if (collisioneConMuro(pacman, muro)) {
+                pacman.x -= pacman.velocitàX;
+                pacman.y -= pacman.velocitàY;
+            }
+        }
+    }
+
+    public boolean collisioneConMuro(Blocco a, Blocco b) {
+        return (a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -156,6 +174,7 @@ public class Canvas extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        cammina();
         repaint();
     }
 
@@ -169,7 +188,21 @@ public class Canvas extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("KeyEvent: " + e.getKeyCode());
+        // System.out.println("KeyEvent: " + e.getKeyCode());
+        // movimento pacman
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            pacman.aggiornaPosizione('U');
+            pacman.image = immaginePacmanUp;
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            pacman.aggiornaPosizione('D');
+            pacman.image = immaginePacmanDown;
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            pacman.aggiornaPosizione('L');
+            pacman.image = immaginePacmanSinistra;
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            pacman.aggiornaPosizione('R');
+            pacman.image = immaginePacmanDestra;
+        }
     }
 
 }
