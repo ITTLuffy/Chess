@@ -29,9 +29,28 @@ public class Blocco {
     }
 
     public void aggiornaPosizione(char direzione) {
+        char direzionePrecedente = this.direzione;
+
         this.direzione = direzione;
+
         aggiornaVelocita();
+
+        // faccio il movimento
+        this.y += velocitàY;
+        this.x += velocitàX;
+
+        for (Blocco muro : muri_array) {
+            if (collisioneConMuro(this, muro)) {
+                // se c'è una collisione, annullo il movimento
+                this.x -= velocitàX;
+                this.y -= velocitàY;
+                this.direzione = direzionePrecedente; // ripristino la direzione precedente
+                aggiornaVelocita();
+            }
+        }
+
     }
+
 
     public void aggiornaVelocita() {
         switch (this.direzione) {

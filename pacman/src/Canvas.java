@@ -190,18 +190,25 @@ public class Canvas extends JPanel implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent e) {
         // System.out.println("KeyEvent: " + e.getKeyCode());
         // movimento pacman
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            pacman.aggiornaPosizione('U');
-            pacman.image = immaginePacmanUp;
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            pacman.aggiornaPosizione('D');
-            pacman.image = immaginePacmanDown;
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            pacman.aggiornaPosizione('L');
-            pacman.image = immaginePacmanSinistra;
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            pacman.aggiornaPosizione('R');
-            pacman.image = immaginePacmanDestra;
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP -> {
+                pacman.aggiornaPosizione('U');
+                pacman.image = immaginePacmanUp;
+            }
+            case KeyEvent.VK_DOWN -> {
+                pacman.aggiornaPosizione('D');
+                pacman.image = immaginePacmanDown;
+            }
+            case KeyEvent.VK_LEFT -> {
+                pacman.aggiornaPosizione('L');
+                pacman.image = immaginePacmanSinistra;
+            }
+            case KeyEvent.VK_RIGHT -> {
+                pacman.aggiornaPosizione('R');
+                pacman.image = immaginePacmanDestra;
+            }
+            default -> {
+            }
         }
     }
 
