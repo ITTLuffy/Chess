@@ -1,6 +1,6 @@
 import javax.swing.JFrame;
 
-public class Main {
+public class Drawer {
 
     public static void main(String[] args) {
 
