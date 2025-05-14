@@ -1,20 +1,26 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Timer;
 import javax.swing.JPanel;
 
 public class Canvas extends JPanel {
 
+    // matrice x scachiera
     private int[][] scacchiera;
+    // margini della scacchiera
     private int margine_sopra = 55;
     private int margine_lati = 17;
+    // dimensione della cella
     private int dimCella = 80;
+    // arrayList x i pezzi
     private ArrayList<Pawn> pedoni;
     private ArrayList<King> re;
     private ArrayList<Bishop> alfieri;
     private ArrayList<Knight> cavalli;
     private ArrayList<Rook> torri;
     private ArrayList<Queen> regine;
+    private Timer t;
 
 
     public Canvas() {
@@ -122,6 +128,7 @@ public class Canvas extends JPanel {
 
 
 
+
         // Lettere a - h
         g.setColor(Color.BLACK);
         g.setFont(g.getFont().deriveFont(18f));
@@ -140,6 +147,7 @@ public class Canvas extends JPanel {
             g.drawString(String.valueOf(numero), x, y);
         }
 
+        
     }
 
 }
