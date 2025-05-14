@@ -12,12 +12,19 @@ public class Canvas extends JPanel {
     private ArrayList<Pawn> pedoni;
     private ArrayList<King> re;
     private ArrayList<Bishop> alfieri;
+    private ArrayList<Knight> cavalli;
+    private ArrayList<Rook> torri;
+    private ArrayList<Queen> regine;
+
 
     public Canvas() {
         scacchiera = new int[8][8];
         pedoni = new ArrayList<>();
         re = new ArrayList<>();
         alfieri = new ArrayList<>();
+        cavalli = new ArrayList<>();
+        torri = new ArrayList<>();
+        regine = new ArrayList<>();
 
         int p = 6;
         pedoni.add(new Pawn(true, p, 0));  // pedone bianco
@@ -50,15 +57,18 @@ public class Canvas extends JPanel {
         alfieri.add(new Bishop(true, 7, 2)); // alfiere bianco
         alfieri.add(new Bishop(true, 7, 5)); // alfiere bianco
 
-        pedoni.add(new Pawn(false, p1, 7)); // cavallo nero
-        pedoni.add(new Pawn(false, p1, 7)); // cavallo bianco
+        cavalli.add(new Knight(false, 0, 1)); // cavallo nero
+        cavalli.add(new Knight(false, 0, 6)); // cavallo nero
+        cavalli.add(new Knight(true, 7, 1)); // cavallo bianco
+        cavalli.add(new Knight(true, 7, 6)); // cavallo bianco
 
-        pedoni.add(new Pawn(false, p1, 7)); // torre nero
-        pedoni.add(new Pawn(false, p1, 7)); // torre bianco
+        torri.add(new Rook(false, 0, 0)); // torre nero
+        torri.add(new Rook(false, 0, 7)); // torre nero
+        torri.add(new Rook(true, 7, 0)); // torre bianco
+        torri.add(new Rook(true, 7, 7)); // torre bianco
 
-        pedoni.add(new Pawn(false, p1, 7)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 7)); // pedone nero
-
+        regine.add(new Queen(false, 0, 3)); // regina nero
+        regine.add(new Queen(true, 7, 3)); // regina bianco
 
     }
 
@@ -91,9 +101,25 @@ public class Canvas extends JPanel {
             k.draw(g, margine_sopra, margine_lati);
         }
 
+        // disegno gli alfieri
         for (Bishop b : alfieri) {
             b.draw(g, margine_sopra, margine_lati);
         }
+
+        // disegno i cavalli
+        for (Knight k : cavalli) {
+            k.draw(g, margine_sopra, margine_lati);
+        }
+
+        // disegno le torri
+        for (Rook r : torri) {
+            r.draw(g, margine_sopra, margine_lati);
+        }
+
+        for (Queen q : regine) {
+            q.draw(g, margine_sopra, margine_lati);
+        }
+
 
 
         // Lettere a - h
