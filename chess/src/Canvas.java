@@ -11,11 +11,13 @@ public class Canvas extends JPanel {
     private int dimCella = 80;
     private ArrayList<Pawn> pedoni;
     private ArrayList<King> re;
+    private ArrayList<Bishop> alfieri;
 
     public Canvas() {
         scacchiera = new int[8][8];
         pedoni = new ArrayList<>();
         re = new ArrayList<>();
+        alfieri = new ArrayList<>();
 
         int p = 6;
         pedoni.add(new Pawn(true, p, 0));  // pedone bianco
@@ -42,12 +44,18 @@ public class Canvas extends JPanel {
         
         pedoni.add(new Pawn(false, p1, 7)); // regina nero
         pedoni.add(new Pawn(false, p1, 7)); // regina bianco
-        pedoni.add(new Pawn(false, p1, 7)); // alfiere nero
-        pedoni.add(new Pawn(false, p1, 7)); // alfiere bianco
+
+        alfieri.add(new Bishop(false, 0, 2)); // alfiere nero
+        alfieri.add(new Bishop(false, 0, 5)); // alfiere nero
+        alfieri.add(new Bishop(true, 7, 2)); // alfiere bianco
+        alfieri.add(new Bishop(true, 7, 5)); // alfiere bianco
+
         pedoni.add(new Pawn(false, p1, 7)); // cavallo nero
         pedoni.add(new Pawn(false, p1, 7)); // cavallo bianco
+
         pedoni.add(new Pawn(false, p1, 7)); // torre nero
         pedoni.add(new Pawn(false, p1, 7)); // torre bianco
+
         pedoni.add(new Pawn(false, p1, 7)); // pedone nero
         pedoni.add(new Pawn(false, p1, 7)); // pedone nero
 
@@ -82,6 +90,11 @@ public class Canvas extends JPanel {
         for (King k : re) {
             k.draw(g, margine_sopra, margine_lati);
         }
+
+        for (Bishop b : alfieri) {
+            b.draw(g, margine_sopra, margine_lati);
+        }
+
 
         // Lettere a - h
         g.setColor(Color.BLACK);
