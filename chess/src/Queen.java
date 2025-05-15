@@ -26,7 +26,10 @@ public class Queen {
             }
         } catch (IOException | IllegalArgumentException ex) {
             System.out.println("Errore nel caricamento dell'immagine: " + ex.getMessage());
+        } catch (Exception e) {
+            System.out.println("Errore generico: " + e.getMessage());
         }
+
 
     }
 
