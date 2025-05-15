@@ -1,29 +1,33 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Timer;
+// import java.util.Timer;
 import javax.swing.JPanel;
 
 public class Canvas extends JPanel {
 
     // matrice x scachiera
-    private int[][] scacchiera;
+    private final int[][] scacchiera;
     // margini della scacchiera
-    private int margine_sopra = 55;
-    private int margine_lati = 17;
+    private final int margine_sopra = 55;
+    private final int margine_lati = 23;
     // dimensione della cella
-    private int dimCella = 80;
+    private final int dimCella = 80;
     // arrayList x i pezzi
-    private ArrayList<Pawn> pedoni;
-    private ArrayList<King> re;
-    private ArrayList<Bishop> alfieri;
-    private ArrayList<Knight> cavalli;
-    private ArrayList<Rook> torri;
-    private ArrayList<Queen> regine;
-    private Timer t;
-
+    private final ArrayList<Pawn> pedoni;
+    private final ArrayList<King> re;
+    private final ArrayList<Bishop> alfieri;
+    private final ArrayList<Knight> cavalli;
+    private final ArrayList<Rook> torri;
+    private final ArrayList<Queen> regine;
+    // private Timer t;
 
     public Canvas() {
+        // sfondo
+        setBackground(Color.GRAY);
+        // inizializzo i vari array e arrayList
         scacchiera = new int[8][8];
         pedoni = new ArrayList<>();
         re = new ArrayList<>();
@@ -32,15 +36,16 @@ public class Canvas extends JPanel {
         torri = new ArrayList<>();
         regine = new ArrayList<>();
 
+        // pezzi aggiunti agli arraylist
         int p = 6;
-        pedoni.add(new Pawn(true, p, 0));  // pedone bianco
-        pedoni.add(new Pawn(true, p, 1));  // pedone bianco
-        pedoni.add(new Pawn(true, p, 2));  // pedone bianco
-        pedoni.add(new Pawn(true, p, 3));  // pedone bianco
-        pedoni.add(new Pawn(true, p, 4));  // pedone bianco
-        pedoni.add(new Pawn(true, p, 5));  // pedone bianco
-        pedoni.add(new Pawn(true, p, 6));  // pedone bianco
-        pedoni.add(new Pawn(true, p, 7));  // pedone bianco
+        pedoni.add(new Pawn(true, p, 0)); // pedone bianco
+        pedoni.add(new Pawn(true, p, 1)); // pedone bianco
+        pedoni.add(new Pawn(true, p, 2)); // pedone bianco
+        pedoni.add(new Pawn(true, p, 3)); // pedone bianco
+        pedoni.add(new Pawn(true, p, 4)); // pedone bianco
+        pedoni.add(new Pawn(true, p, 5)); // pedone bianco
+        pedoni.add(new Pawn(true, p, 6)); // pedone bianco
+        pedoni.add(new Pawn(true, p, 7)); // pedone bianco
 
         int p1 = 1;
         pedoni.add(new Pawn(false, p1, 0)); // pedone nero
@@ -54,7 +59,7 @@ public class Canvas extends JPanel {
 
         re.add(new King(false, 0, 4)); // re nero
         re.add(new King(true, 7, 4)); // re bianco
-        
+
         pedoni.add(new Pawn(false, p1, 7)); // regina nero
         pedoni.add(new Pawn(false, p1, 7)); // regina bianco
 
@@ -76,9 +81,70 @@ public class Canvas extends JPanel {
         regine.add(new Queen(false, 0, 3)); // regina nero
         regine.add(new Queen(true, 7, 3)); // regina bianco
 
+        // listener pezzi
+        addMouseListener(new MouseAdapter() {
+            // metodo per quando si preme il mouse
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // coordinate click
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+
+                // riga e colonna
+                int col = (mouseX - margine_lati) / dimCella;
+                int row = (mouseY - margine_sopra) / dimCella;
+
+                if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+                    // quale cella è stata cliccata (row, col), utilizzando il metodo converti
+                    System.out.println(convertiMossa(row, col));
+
+                    // Si vede che pezzo si ha cliccato
+                    for (Pawn p : pedoni) {
+                        if (p.getRow() == row && p.getCol() == col) {
+                            System.out.println("Hai cliccato un pedone!");
+                            // logica selezione
+                        }
+                    }
+
+                    for (Bishop b : alfieri) {
+                        if (b.getRow() == row && b.getCol() == col) {
+                            System.out.println("Hai cliccato un alfiere!");
+                            // logica selezione
+                        }
+                    }
+                    for (Queen q : regine) {
+                        if (q.getRow() == row && q.getCol() == col) {
+                            System.out.println("Hai cliccato una regina!");
+                            // logica selezione
+                        }
+                    }
+                    for (Knight n : cavalli) {
+                        if (n.getRow() == row && n.getCol() == col) {
+                            System.out.println("Hai cliccato un cavallo!");
+                            // logica selezione
+                        }
+                    }
+                    for (Rook r : torri) {
+                        if (r.getRow() == row && r.getCol() == col) {
+                            System.out.println("Hai cliccato una torre!");
+                            // logica selezione
+                        }
+                    }
+                    for (King k : re) {
+                        if (k.getRow() == row && k.getCol() == col) {
+                            System.out.println("Hai cliccato il re!");
+                            // logica selezione
+                        }
+                    }
+
+                }
+            }
+
+        });
     }
 
     @Override
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -126,9 +192,6 @@ public class Canvas extends JPanel {
             q.draw(g, margine_sopra, margine_lati);
         }
 
-
-
-
         // Lettere a - h
         g.setColor(Color.BLACK);
         g.setFont(g.getFont().deriveFont(18f));
@@ -147,7 +210,14 @@ public class Canvas extends JPanel {
             g.drawString(String.valueOf(numero), x, y);
         }
 
-        
     }
 
+    // metodo per inserire la conversione in mosse di scacchi
+    // COLONNE --> a - h
+    // RIGHE --> 1-8
+    public String convertiMossa(int row, int col) {
+        char c = (char) ('a' + col); // trasformo in lettere a - h
+        int r = 8 - row; // trasformo in numeri
+        return "" + c + r; // ritorno in notazione
+    }
 }

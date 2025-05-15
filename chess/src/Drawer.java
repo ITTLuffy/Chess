@@ -10,7 +10,7 @@ public class Drawer {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setSize(690, 790);
+        frame.setSize(700, 790);
         frame.add(c);
         frame.setVisible(true);
 
