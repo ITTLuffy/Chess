@@ -23,6 +23,14 @@ public class Canvas extends JPanel {
     private final ArrayList<Rook> torri;
     private final ArrayList<Queen> regine;
     // private Timer t;
+    // logica --> si hanno 2 click
+    // 1. selezionare il pezzo
+    // 2. selezionare la cella di destinazione
+    // IMPLEMENTARE DRAG E DROP?
+    private final int contaClick = 0;
+    private final int clickMassimi = 2;
+
+    // i pezzi del nero verranno gestiti da un AI di nome STOCKFISH, da implementare
 
     public Canvas() {
         // sfondo
