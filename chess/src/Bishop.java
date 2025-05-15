@@ -2,11 +2,12 @@
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class Bishop {
     private Image immagine;
-    private boolean colore;
+    private final boolean colore;
     private int row;
     private int col;
 
@@ -17,10 +18,10 @@ public class Bishop {
 
         try {
             if (colore) {
-                immagine = ImageIO.read(getClass().getResource("immagini/Chess_blt45.svg.png"));
+                immagine = ImageIO.read(Objects.requireNonNull(getClass().getResource("immagini/Chess_blt45.svg.png")));
                 System.out.println("Immagine caricata");
             } else {
-                immagine = ImageIO.read(getClass().getResource("immagini/Chess_bdt45.svg.png"));
+                immagine = ImageIO.read(Objects.requireNonNull(getClass().getResource("immagini/Chess_bdt45.svg.png")));
                 System.out.println("Immagine caricata");
             }
         } catch (IOException | IllegalArgumentException ex) {
@@ -53,11 +54,7 @@ public class Bishop {
         int x = col * tileSize + margineLato;
         int y = row * tileSize + margineSopra;
 
-        if (colore) {
-            g.drawImage(immagine, x, y, tileSize, tileSize, null);
-        } else if (!colore) {
-            g.drawImage(immagine, x, y, tileSize, tileSize, null);
-        }
+        g.drawImage(immagine, x, y, tileSize, tileSize, null);
     }
 
 
