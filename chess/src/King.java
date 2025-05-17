@@ -7,12 +7,10 @@ import javax.imageio.ImageIO;
 public class King {
 
     private Image immagine;
-    private final boolean colore;
     private int row;
     private int col;
 
     public King(boolean colore, int row, int col) {
-        this.colore = colore;
         this.row = row;
         this.col = col;
 

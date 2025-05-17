@@ -8,13 +8,11 @@ import javax.imageio.ImageIO;
 public class Queen {
 
     private Image immagine;
-    private final boolean colore;
     private int row;
     private int col;
 
     public Queen(boolean colore, int row, int col) {
         this.col = col;
-        this.colore = colore;
         this.row = row;
 
         try {

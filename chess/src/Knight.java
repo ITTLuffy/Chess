@@ -8,13 +8,11 @@ import javax.imageio.ImageIO;
 public class Knight {
 
     private Image immagine;
-    private final boolean colore;
     private int row;
     private int col;
 
     public Knight(boolean colore, int row, int col) {
         this.col = col;
-        this.colore = colore;
         this.row = row;
 
         try {
