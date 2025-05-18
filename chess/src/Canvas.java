@@ -6,9 +6,18 @@ import java.util.ArrayList;
 // import java.util.Timer;
 import javax.swing.JPanel;
 
+
+// Logica --> si hanno 2 click
+// 1. selezionare il pezzo
+// 2. selezionare la cella di destinazione
+// IMPLEMENTARE DRAG E DROP?
+// Idea, serverino con socket, che possa giocare con più persone
+// I pezzi del nero verranno gestiti da un AI di nome STOCKFISH, da implementare
+
+
 public class Canvas extends JPanel {
 
-    // matrice x scachiera
+    // matrice x scacchiera
     private final int[][] scacchiera;
     // margini della scacchiera
     private final int margine_sopra = 55;
@@ -22,18 +31,21 @@ public class Canvas extends JPanel {
     private final ArrayList<Knight> cavalli;
     private final ArrayList<Rook> torri;
     private final ArrayList<Queen> regine;
-    // private Timer t;
-    // logica --> si hanno 2 click
-    // 1. selezionare il pezzo
-    // 2. selezionare la cella di destinazione
-    // IMPLEMENTARE DRAG E DROP?
-    private final int contaClick = 0;
-    private final int clickMassimi = 2;
 
-    // i pezzi del nero verranno gestiti da un AI di nome STOCKFISH, da implementare
+    // private Timer t;
+
+    // click
+    private int contaClick = 0;
+
+    // pezzo selezionato
+    private Piece pezzoSelezionato = null;
+
+    // pezzo da muovere
+    private int destinazioneRow, destinazioneCol;
+
 
     public Canvas() {
-        // sfondo
+        // sfondo grigio
         setBackground(Color.GRAY);
         // inizializzo i vari array e arrayList
         scacchiera = new int[8][8];
@@ -68,9 +80,6 @@ public class Canvas extends JPanel {
         re.add(new King(false, 0, 4)); // re nero
         re.add(new King(true, 7, 4)); // re bianco
 
-        pedoni.add(new Pawn(false, p1, 7)); // regina nero
-        pedoni.add(new Pawn(false, p1, 7)); // regina bianco
-
         alfieri.add(new Bishop(false, 0, 2)); // alfiere nero
         alfieri.add(new Bishop(false, 0, 5)); // alfiere nero
         alfieri.add(new Bishop(true, 7, 2)); // alfiere bianco
@@ -94,6 +103,9 @@ public class Canvas extends JPanel {
             // metodo per quando si preme il mouse
             @Override
             public void mouseClicked(MouseEvent e) {
+                // dico all'utente di selezionare il pezzo da muovere
+                System.out.println("Seleziona il pezzo da muovere");
+
                 // coordinate click
                 int mouseX = e.getX();
                 int mouseY = e.getY();
@@ -102,50 +114,26 @@ public class Canvas extends JPanel {
                 int col = (mouseX - margine_lati) / dimCella;
                 int row = (mouseY - margine_sopra) / dimCella;
 
+                // se la cella è valida
                 if (row >= 0 && row < 8 && col >= 0 && col < 8) {
-                    // quale cella è stata cliccata (row, col), utilizzando il metodo converti
-                    System.out.println(convertiMossa(row, col));
+                    // stampo quale cella è stata cliccata (row, col), utilizzando il metodo converti
+                    System.out.print(convertiMossa(row, col) + " ");
 
-                    // Si vede che pezzo si ha cliccato
-                    for (Pawn p : pedoni) {
-                        if (p.getRow() == row && p.getCol() == col) {
-                            System.out.println("Hai cliccato un pedone!");
-                            // logica selezione
+                    // condizioni per muovere il pezzo
+                    if (contaClick == 0) {
+                        pezzoSelezionato = selezionaPezzo(row, col); // SELEZIONO IL PEZZO
+                        if (pezzoSelezionato != null) { // se il pezzo è selezionato
+                            System.out.println("Pezzo selezionato"); // ack
+                            contaClick = 1; // incremento il contatore
                         }
+                    } else if (contaClick == 1 && pezzoSelezionato != null) {
+                        destinazioneRow = row;
+                        destinazioneCol = col;
+                        muoviPezzo(); // MUOVO IL PEZZO
+                        contaClick = 0; // reset per il prossimo movimento
                     }
-
-                    for (Bishop b : alfieri) {
-                        if (b.getRow() == row && b.getCol() == col) {
-                            System.out.println("Hai cliccato un alfiere!");
-                            // logica selezione
-                        }
-                    }
-                    for (Queen q : regine) {
-                        if (q.getRow() == row && q.getCol() == col) {
-                            System.out.println("Hai cliccato una regina!");
-                            // logica selezione
-                        }
-                    }
-                    for (Knight n : cavalli) {
-                        if (n.getRow() == row && n.getCol() == col) {
-                            System.out.println("Hai cliccato un cavallo!");
-                            // logica selezione
-                        }
-                    }
-                    for (Rook r : torri) {
-                        if (r.getRow() == row && r.getCol() == col) {
-                            System.out.println("Hai cliccato una torre!");
-                            // logica selezione
-                        }
-                    }
-                    for (King k : re) {
-                        if (k.getRow() == row && k.getCol() == col) {
-                            System.out.println("Hai cliccato il re!");
-                            // logica selezione
-                        }
-                    }
-
                 }
+
             }
 
         });
@@ -154,17 +142,21 @@ public class Canvas extends JPanel {
     @Override
 
     protected void paintComponent(Graphics g) {
+        // chiamata al metodo della superclasse
         super.paintComponent(g);
 
+        // disegno la scacchiera
         for (int row = 0; row < scacchiera.length; row++) {
             for (int col = 0; col < scacchiera[0].length; col++) {
 
+                // colori alternati
                 if ((row + col) % 2 == 0) {
                     g.setColor(new Color(108, 187, 60));
                 } else {
                     g.setColor(new Color(92, 168, 42));
                 }
 
+                // disegno la cella
                 g.fillRect(col * dimCella + margine_lati, row * dimCella + margine_sopra, dimCella, dimCella);
 
             }
@@ -196,6 +188,7 @@ public class Canvas extends JPanel {
             r.draw(g, margine_sopra, margine_lati);
         }
 
+        // disegno le regine
         for (Queen q : regine) {
             q.draw(g, margine_sopra, margine_lati);
         }
@@ -228,4 +221,101 @@ public class Canvas extends JPanel {
         int r = 8 - row; // trasformo in numeri
         return "" + c + r; // ritorno in notazione
     }
+
+    // metodo che seleziona un pezzo
+    public Piece selezionaPezzo(int row, int col) {
+        // logica per muovere il pezzo
+        // 1. controlla se la mossa è valida --> DA FARE
+        // 2. muovi il pezzo --> OKAY
+        // 3. aggiorna la scacchiera --> OKAY
+        // 4. ridisegna la scacchiera --> OKAY
+        // 5. rendere possibile muovere + pezzi
+
+
+        // seleziona il pezzo
+        int clickMassimi = 2;
+        if (contaClick < clickMassimi) {
+            // click 1
+            contaClick++;
+
+            // seleziona il pezzo
+            for (Pawn p : pedoni) {
+                if (p.getRow() == row && p.getCol() == col) {
+                    System.out.println("Hai selezionato un pedone!");
+                    pezzoSelezionato = p;
+                    return pezzoSelezionato;
+                }
+            }
+
+            for (Bishop b : alfieri) {
+                if (b.getRow() == row && b.getCol() == col) {
+                    System.out.println("Hai selezionato un alfiere!");
+                    pezzoSelezionato = b;
+                    return pezzoSelezionato;
+                }
+            }
+
+            for (Queen q : regine) {
+                if (q.getRow() == row && q.getCol() == col) {
+                    System.out.println("Hai selezionato una regina!");
+                    pezzoSelezionato = q;
+                    return pezzoSelezionato;
+                }
+            }
+
+            for (Knight n : cavalli) {
+                if (n.getRow() == row && n.getCol() == col) {
+                    System.out.println("Hai selezionato un cavallo!");
+                    pezzoSelezionato = n;
+                    return pezzoSelezionato;
+                }
+
+            }
+
+            for (Rook r : torri) {
+                if (r.getRow() == row && r.getCol() == col) {
+                    System.out.println("Hai selezionato una torre!");
+                    pezzoSelezionato = r;
+                    return pezzoSelezionato;
+                }
+            }
+
+            for (King k : re) {
+                if (k.getRow() == row && k.getCol() == col) {
+                    System.out.println("Hai selezionato il re!");
+                    pezzoSelezionato = k;
+                    return pezzoSelezionato;
+                }
+
+            }
+
+        }
+
+        // se il pezzo non è selezionato
+        return null;
+
+    }
+
+    // metodo per muovere il pezzo
+    public void muoviPezzo() {
+        // posizione iniziale del pezzo
+        int oldRow = pezzoSelezionato.getRow();
+        int oldCol = pezzoSelezionato.getCol();
+
+        // cambio la posizione del pezzo
+        pezzoSelezionato.setRow(destinazioneRow);
+        pezzoSelezionato.setCol(destinazioneCol);
+
+        // aggiorno la scacchiera
+        scacchiera[oldRow][oldCol] = 0; // metto a zero la posizione vecchia
+        scacchiera[destinazioneRow][destinazioneCol] = 1; // metto a uno la posizione nuova
+
+        // azzero il pezzo selezionato
+        pezzoSelezionato = null;
+        // ack all'utente
+        System.out.println("Pezzo messo in " + convertiMossa(destinazioneRow, destinazioneCol));
+        // ridisegno la scacchiera
+        repaint();
+    }
+
 }
