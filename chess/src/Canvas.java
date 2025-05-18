@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 // Idea, serverino con socket, che possa giocare con più persone
 // I pezzi del nero verranno gestiti da un AI di nome STOCKFISH, da implementare
 
+// gestire il sistema a turni bianco e nero con timer
 
 public class Canvas extends JPanel {
 
