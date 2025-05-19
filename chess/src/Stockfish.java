@@ -24,14 +24,14 @@ public class Stockfish {
     }
 
     // Invia un comando a Stockfish
-    public void sendCommand(String command) throws IOException {
+    public void inviaComando(String command) throws IOException {
         stockfishWriter.write(command + "\n");
         // pulisco il writer
         stockfishWriter.flush();
     }
 
     // Legge la risposta di Stockfish fino a una riga che contiene una certa keyword
-    public String readResponse(String waitFor) throws IOException {
+    public String leggiRisposta(String waitFor) throws IOException {
         // Linea di risposta
         String linea;
         // StringBuilder per accumulare la risposta
@@ -50,14 +50,14 @@ public class Stockfish {
     }
 
     public String getBestMove(String fen) throws IOException {
-        sendCommand("uci");
-        readResponse("uciok");  // aspetta conferma UCI
+        inviaComando("uci");
+        leggiRisposta("uci ok");  // aspetta conferma UCI
 
-        sendCommand("isready");
-        readResponse("readyok");
+        inviaComando("Pronto");
+        leggiRisposta("ready ok");
 
-        sendCommand("position fen " + fen);
-        sendCommand("go movetime 1000");  // calcola per 1 secondo
+        inviaComando("Posizione " + fen);
+        inviaComando("go movetime 1000");  // calcola per 1 secondo
 
         String bestMove = "";
         String line;
@@ -72,7 +72,7 @@ public class Stockfish {
 
     // Metodo per chiudere il processo di Stockfish
     public void close() throws IOException {
-        sendCommand("quit");
+        inviaComando("quit");
         stockfishWriter.close();
         stockfishReader.close();
         stockfishProcess.destroy();

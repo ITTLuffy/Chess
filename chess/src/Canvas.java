@@ -20,11 +20,14 @@ public class Canvas extends JPanel {
 
     // matrice x scacchiera
     private final int[][] scacchiera;
+
     // margini della scacchiera
     private final int margine_sopra = 55;
     private final int margine_lati = 23;
+
     // dimensione della cella
     private final int dimCella = 80;
+
     // arrayList x i pezzi
     private final ArrayList<Pawn> pedoni;
     private final ArrayList<King> re;
@@ -33,6 +36,7 @@ public class Canvas extends JPanel {
     private final ArrayList<Rook> torri;
     private final ArrayList<Queen> regine;
 
+    // TIMER per gestire il tempo (da gestire rapid, blitz, bullet, ecc.)
     // private Timer t;
 
     // click
@@ -48,7 +52,8 @@ public class Canvas extends JPanel {
     public Canvas() {
         // sfondo grigio
         setBackground(Color.GRAY);
-        // inizializzo i vari array e arrayList
+
+        // inizializzo i vari array e arrayList, tra cui la scacchiera
         scacchiera = new int[8][8];
         pedoni = new ArrayList<>();
         re = new ArrayList<>();
@@ -57,7 +62,7 @@ public class Canvas extends JPanel {
         torri = new ArrayList<>();
         regine = new ArrayList<>();
 
-        // pezzi aggiunti agli arraylist
+        // pezzi aggiunti agli arraylist e posizionati nelle coordinate iniziali corrette
         int p = 6;
         pedoni.add(new Pawn(true, p, 0)); // pedone bianco
         pedoni.add(new Pawn(true, p, 1)); // pedone bianco
@@ -128,8 +133,8 @@ public class Canvas extends JPanel {
                             contaClick = 1; // incremento il contatore
                         }
                     } else if (contaClick == 1 && pezzoSelezionato != null) {
-                        destinazioneRow = row;
-                        destinazioneCol = col;
+                        destinazioneRow = row; // setto la riga di destinazione
+                        destinazioneCol = col; // setto la colonna di destinazione
                         muoviPezzo(); // MUOVO IL PEZZO
                         contaClick = 0; // reset per il prossimo movimento
                     }
@@ -143,7 +148,7 @@ public class Canvas extends JPanel {
     @Override
 
     protected void paintComponent(Graphics g) {
-        // chiamata al metodo della superclasse
+        // chiamata al metodo della super
         super.paintComponent(g);
 
         // disegno la scacchiera
@@ -315,8 +320,15 @@ public class Canvas extends JPanel {
         pezzoSelezionato = null;
         // ack all'utente
         System.out.println("Pezzo messo in " + convertiMossa(destinazioneRow, destinazioneCol));
-        // ridisegno la scacchiera
-        repaint();
+        // ridisegno solo le due celle interessate
+        int x1 = oldCol * dimCella + margine_lati;
+        int y1 = oldRow * dimCella + margine_sopra;
+        int x2 = destinazioneCol * dimCella + margine_lati;
+        int y2 = destinazioneRow * dimCella + margine_sopra;
+
+        repaint(x1, y1, dimCella, dimCella);
+        repaint(x2, y2, dimCella, dimCella);
+
     }
 
 }
