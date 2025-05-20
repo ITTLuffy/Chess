@@ -54,4 +54,13 @@ public class Pawn extends Piece{
         g.drawImage(immagine, x, y, tileSize, tileSize, null);
     }
 
+    @Override
+    public boolean isValidMove(int row, int col) {
+        // Consideriamo solo il pezzo bianco
+        int direzione = 1; // direzione del movimento del pedone
+        return (new Pawn(true, this.row, this.col).getCol() == col &&
+                new Pawn(true, this.row, this.col).getRow() + direzione == row);
+
+    }
+
 }

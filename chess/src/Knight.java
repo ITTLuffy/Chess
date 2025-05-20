@@ -54,4 +54,8 @@ public class Knight extends Piece {
         g.drawImage(immagine, x, y, tileSize, tileSize, null);
     }
 
+    @Override
+    public boolean isValidMove(int row, int col) {
+        return false;
+    }
 }

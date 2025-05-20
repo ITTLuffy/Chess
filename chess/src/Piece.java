@@ -37,4 +37,7 @@ public abstract class Piece {
     // metodo astratto per disegnare il pezzo
     public abstract void draw(Graphics g, int margineSopra, int margineLato);
 
+    public abstract boolean isValidMove(int row, int col);
+
+
 }

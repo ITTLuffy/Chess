@@ -305,6 +305,12 @@ public class Canvas extends JPanel {
 
     // metodo per muovere il pezzo
     public void muoviPezzo() {
+        // verifico che la mossa sia valida
+        if(!pezzoSelezionato.isValidMove(destinazioneRow, destinazioneCol)){
+            System.out.println("Mossa non valida");
+            return;
+        }
+
         // posizione iniziale del pezzo
         int oldRow = pezzoSelezionato.getRow();
         int oldCol = pezzoSelezionato.getCol();
@@ -332,24 +338,5 @@ public class Canvas extends JPanel {
 
     }
 
-    public void mossaValida(int destinazioneRow, int destinazioneCol) {
-        // controlla se la mossa è valida
-        // se la cella è vuota
-        if (scacchiera[destinazioneRow][destinazioneCol] == 0) {
-            System.out.println("Posizione occupata, ritenta");
-            // azzero il pezzo selezionato
-            pezzoSelezionato = null;
-            // decrementare i click
-            contaClick = 1;
-        }
-
-        // passo 2 di pedone
-        if (pezzoSelezionato != null && pezzoSelezionato.getClass() == Pawn.class && destinazioneRow > 1) {
-            System.out.println("Il pedone può muovere solo di 1 cella");
-            // decrementare i click
-            contaClick = 1;
-        }
-
-    }
 
 }
