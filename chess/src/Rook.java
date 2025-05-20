@@ -57,7 +57,7 @@ public class Rook extends Piece {
         // Se c'è un pezzo davanti
 
         // Può muoversi solo in orizzontale o verticale
-        if ((destinazioneCol != col && destinazioneRow == row) || (destinazioneRow != row && destinazioneCol == col)) {
+        if ((destinazioneCol != this.col && destinazioneRow == this.row) || (destinazioneRow != this.row && destinazioneCol == this.col)) {
             return true;
         }
 
