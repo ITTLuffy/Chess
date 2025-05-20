@@ -55,11 +55,25 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public boolean isValidMove(int row, int col) {
-        // Consideriamo solo il pezzo bianco
-        int direzione = 1; // direzione del movimento del pedone
-        return (new Pawn(true, this.row, this.col).getCol() == col &&
-                new Pawn(true, this.row, this.col).getRow() + direzione == row);
+    public boolean isValidMove(int destinazioneRow, int destinazioneCol) { // COSIDERIAMO SOLO I BIANCHI
+        // pedone può muoversi solo in avanti
+        // da gestire LA CATTURA
+        if (destinazioneCol != col) {
+            return false;
+        }
+
+        // Una casella in avanti
+        if (destinazioneRow == this.row - 1) {
+            return true;
+        }
+
+        // Due caselle in avanti dalla riga di partenza (riga 6)
+        if (this.row == 6 && destinazioneRow == this.row - 2) {
+            return true;
+        }
+
+        // Qualsiasi altro caso è invalido
+        return false;
 
     }
 
