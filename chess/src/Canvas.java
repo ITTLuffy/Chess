@@ -105,6 +105,7 @@ public class Canvas extends JPanel {
         regine.add(new Queen(true, 7, 3)); // regina bianco
 
         // listener pezzi
+        // DRAG AND DROP?
         addMouseListener(new MouseAdapter() {
             // metodo per quando si preme il mouse
             @Override
@@ -328,6 +329,26 @@ public class Canvas extends JPanel {
 
         repaint(x1, y1, dimCella, dimCella);
         repaint(x2, y2, dimCella, dimCella);
+
+    }
+
+    public void mossaValida(int destinazioneRow, int destinazioneCol) {
+        // controlla se la mossa è valida
+        // se la cella è vuota
+        if (scacchiera[destinazioneRow][destinazioneCol] == 0) {
+            System.out.println("Posizione occupata, ritenta");
+            // azzero il pezzo selezionato
+            pezzoSelezionato = null;
+            // decrementare i click
+            contaClick = 1;
+        }
+
+        // passo 2 di pedone
+        if (pezzoSelezionato != null && pezzoSelezionato.getClass() == Pawn.class && destinazioneRow > 1) {
+            System.out.println("Il pedone può muovere solo di 1 cella");
+            // decrementare i click
+            contaClick = 1;
+        }
 
     }
 
