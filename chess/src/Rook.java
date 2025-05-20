@@ -53,6 +53,14 @@ public class Rook extends Piece {
 
     @Override
     public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
+
+        // Se c'è un pezzo davanti
+
+        // Può muoversi solo in orizzontale o verticale
+        if ((destinazioneCol != col && destinazioneRow == row) || (destinazioneRow != row && destinazioneCol == col)) {
+            return true;
+        }
+
         return false;
     }
 }
