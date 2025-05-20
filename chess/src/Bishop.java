@@ -53,7 +53,15 @@ public class Bishop extends Piece{
     }
 
     @Override
-    public boolean isValidMove(int row, int col) {
+    public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
+        // Se c'è un pezzo davanti
+
+        // Va solo in diagonale; ci si sposta di x di row e x di col
+        // uso il valore assoluto per vedere se la differenza è uguale
+        if(Math.abs(destinazioneRow - this.row) == Math.abs(destinazioneCol - this.col)) {
+            return true;
+        }
+
         return false;
     }
 }

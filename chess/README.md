@@ -29,6 +29,7 @@ Così si può giocare da una macchina server a una macchina client.
 
 ## Gestire
 - Gestire cattura pedone
+- Gestire non possibilità di muovere sotto scacco
 - Gestire metodo isValidMove altri pezzi
 - Gestire se pezzo selezionato, mostrare pallini bianchi x dove può muoversi
 

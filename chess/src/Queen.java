@@ -54,7 +54,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean isValidMove(int row, int col) {
+    public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
         return false;
     }
 }

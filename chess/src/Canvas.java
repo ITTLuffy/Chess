@@ -48,6 +48,11 @@ public class Canvas extends JPanel {
     // pezzo da muovere
     private int destinazioneRow, destinazioneCol;
 
+    // boolean x colore cella scacchiera
+    // true --> bianco
+    // false --> nero
+    // private boolean coloreCella = false;
+
 
     public Canvas() {
         // sfondo grigio
