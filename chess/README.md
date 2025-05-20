@@ -27,3 +27,8 @@ Aggiungere un server socket per la comunicazione tra client e server.
 Così si può giocare da una macchina server a una macchina client.
 
 
+## Gestire
+- Gestire cattura pedone
+- Gestire metodo isValidMove altri pezzi
+- Gestire se pezzo selezionato, mostrare pallini bianchi x dove può muoversi
+
