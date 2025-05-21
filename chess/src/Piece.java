@@ -37,6 +37,7 @@ public abstract class Piece {
     // metodo astratto per disegnare il pezzo
     public abstract void draw(Graphics g, int margineSopra, int margineLato);
 
+    // metodo astratto per verificare se la mossa è valida o meno
     public abstract boolean isValidMove(int destinazioneRow, int destinazioneCol);
 
 

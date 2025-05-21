@@ -63,6 +63,8 @@ public class King extends Piece {
 
         // Se la differenza è 1 in una direzione e 0 nell'altra, è un movimento valido
         if (diffRow <= 1 && diffCol <= 1) {
+
+            
             // Escludo la possibilità che il re stia fermo nella stessa casella
             if (diffRow == 0 && diffCol == 0) {
                 return false;

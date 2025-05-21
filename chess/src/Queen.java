@@ -57,6 +57,7 @@ public class Queen extends Piece {
     public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
 
         // Se c'è un pezzo davanti
+        
         // La regina si muove come un alfiere e come una torre
         if(Math.abs(destinazioneRow - this.row) == Math.abs(destinazioneCol - this.col)) {
             return true;
