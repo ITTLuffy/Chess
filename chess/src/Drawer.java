@@ -1,4 +1,4 @@
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Drawer {
 
@@ -11,7 +11,7 @@ public class Drawer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setSize(700, 790);
-        frame.add(c);
+        frame.getContentPane().add(c);
         frame.setVisible(true);
 
         frame.setLocationRelativeTo(null);

@@ -245,10 +245,20 @@ public class Canvas extends JPanel {
     // metodo per muovere il pezzo
     public void muoviPezzo() {
         // verifico che la mossa sia valida
+
+        // MOVIMENTO PEZZO CORRETTO
         if(!pezzoSelezionato.isValidMove(destinazioneRow, destinazioneCol)){
             System.out.println("Mossa non valida");
             return;
         }
+
+        // VERIFICO SE LA CELLA È OCCUPATA
+        if (eOccupato(destinazioneRow, destinazioneCol)) {
+            System.out.println("Cella occupata");
+            return;
+        }
+
+        // VERIFICO SE SUL TRAGITTO C'E UN PEZZO CHE ROMPE E QUINDI NON SI PUO MUOVERE
 
         // posizione iniziale del pezzo
         int oldRow = pezzoSelezionato.getRow();
@@ -277,5 +287,19 @@ public class Canvas extends JPanel {
 
     }
 
+    // Metodo per verificare se una cella è occupata
+    public Piece mettiPezzo(int row, int col) {
+        for (Piece p : pezziBianchi) {
+            if (p.getRow() == row && p.getCol() == col) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public boolean eOccupato(int row, int col) {
+        // controlla se la cella è occupata
+        return mettiPezzo(row, col) != null;
+    }
 
 }

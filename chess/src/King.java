@@ -54,9 +54,6 @@ public class King extends Piece {
 
     @Override
     public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
-
-        // Se c'è un pezzo davanti
-
         // Può muoversi in qualsiasi direzione, ma solo di una casella
         int diffRow = Math.abs(destinazioneRow - this.row); // valore assoluto differenza
         int diffCol = Math.abs(destinazioneCol - this.col); // valore assoluto differenza
@@ -66,10 +63,7 @@ public class King extends Piece {
 
             
             // Escludo la possibilità che il re stia fermo nella stessa casella
-            if (diffRow == 0 && diffCol == 0) {
-                return false;
-            }
-            return true;
+            return diffRow != 0 || diffCol != 0;
         }
 
         return false;
