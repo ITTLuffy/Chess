@@ -29,12 +29,9 @@ public class Canvas extends JPanel {
     private final int dimCella = 80;
 
     // arrayList x i pezzi
-    private final ArrayList<Pawn> pedoni;
-    private final ArrayList<King> re;
-    private final ArrayList<Bishop> alfieri;
-    private final ArrayList<Knight> cavalli;
-    private final ArrayList<Rook> torri;
-    private final ArrayList<Queen> regine;
+    private final ArrayList<Piece> pezziBianchi;
+    private final ArrayList<Piece> pezziNeri;
+
 
     // TIMER per gestire il tempo (da gestire rapid, blitz, bullet, ecc.)
     // private Timer t;
@@ -60,54 +57,54 @@ public class Canvas extends JPanel {
 
         // inizializzo i vari array e arrayList, tra cui la scacchiera
         scacchiera = new int[8][8];
-        pedoni = new ArrayList<>();
-        re = new ArrayList<>();
-        alfieri = new ArrayList<>();
-        cavalli = new ArrayList<>();
-        torri = new ArrayList<>();
-        regine = new ArrayList<>();
+
+        // INIZIALMENTE avevo fatto 1 arrayList per ogni pezzo, ovvero x i pedoni, i re, ecc.
+        // Ho deciso di creare 2 arrayList, uno per i pezzi bianchi e uno per i pezzi neri
+        // Tutto questo x semplificare il codice e renderlo più leggibile
+        pezziBianchi = new ArrayList<>();
+        pezziNeri = new ArrayList<>();
 
         // pezzi aggiunti agli arraylist e posizionati nelle coordinate iniziali corrette
         int p = 6;
-        pedoni.add(new Pawn(true, p, 0)); // pedone bianco
-        pedoni.add(new Pawn(true, p, 1)); // pedone bianco
-        pedoni.add(new Pawn(true, p, 2)); // pedone bianco
-        pedoni.add(new Pawn(true, p, 3)); // pedone bianco
-        pedoni.add(new Pawn(true, p, 4)); // pedone bianco
-        pedoni.add(new Pawn(true, p, 5)); // pedone bianco
-        pedoni.add(new Pawn(true, p, 6)); // pedone bianco
-        pedoni.add(new Pawn(true, p, 7)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 0)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 1)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 2)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 3)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 4)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 5)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 6)); // pedone bianco
+        pezziBianchi.add(new Pawn(true, p, 7)); // pedone bianco
 
         int p1 = 1;
-        pedoni.add(new Pawn(false, p1, 0)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 1)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 2)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 3)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 4)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 5)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 6)); // pedone nero
-        pedoni.add(new Pawn(false, p1, 7)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 0)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 1)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 2)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 3)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 4)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 5)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 6)); // pedone nero
+        pezziNeri.add(new Pawn(false, p1, 7)); // pedone nero
 
-        re.add(new King(false, 0, 4)); // re nero
-        re.add(new King(true, 7, 4)); // re bianco
+        pezziNeri.add(new King(false, 0, 4)); // re nero
+        pezziBianchi.add(new King(true, 7, 4)); // re bianco
 
-        alfieri.add(new Bishop(false, 0, 2)); // alfiere nero
-        alfieri.add(new Bishop(false, 0, 5)); // alfiere nero
-        alfieri.add(new Bishop(true, 7, 2)); // alfiere bianco
-        alfieri.add(new Bishop(true, 7, 5)); // alfiere bianco
+        pezziNeri.add(new Bishop(false, 0, 2)); // alfiere nero
+        pezziNeri.add(new Bishop(false, 0, 5)); // alfiere nero
+        pezziBianchi.add(new Bishop(true, 7, 2)); // alfiere bianco
+        pezziBianchi.add(new Bishop(true, 7, 5)); // alfiere bianco
 
-        cavalli.add(new Knight(false, 0, 1)); // cavallo nero
-        cavalli.add(new Knight(false, 0, 6)); // cavallo nero
-        cavalli.add(new Knight(true, 7, 1)); // cavallo bianco
-        cavalli.add(new Knight(true, 7, 6)); // cavallo bianco
+        pezziNeri.add(new Knight(false, 0, 1)); // cavallo nero
+        pezziNeri.add(new Knight(false, 0, 6)); // cavallo nero
+        pezziBianchi.add(new Knight(true, 7, 1)); // cavallo bianco
+        pezziBianchi.add(new Knight(true, 7, 6)); // cavallo bianco
 
-        torri.add(new Rook(false, 0, 0)); // torre nero
-        torri.add(new Rook(false, 0, 7)); // torre nero
-        torri.add(new Rook(true, 7, 0)); // torre bianco
-        torri.add(new Rook(true, 7, 7)); // torre bianco
+        pezziNeri.add(new Rook(false, 0, 0)); // torre nero
+        pezziNeri.add(new Rook(false, 0, 7)); // torre nero
+        pezziBianchi.add(new Rook(true, 7, 0)); // torre bianco
+        pezziBianchi.add(new Rook(true, 7, 7)); // torre bianco
 
-        regine.add(new Queen(false, 0, 3)); // regina nero
-        regine.add(new Queen(true, 7, 3)); // regina bianco
+        pezziNeri.add(new Queen(false, 0, 3)); // regina nero
+        pezziBianchi.add(new Queen(true, 7, 3)); // regina bianco
 
         // listener pezzi
         // DRAG AND DROP?
@@ -175,34 +172,14 @@ public class Canvas extends JPanel {
 
         }
 
-        // disegno i pedoni
-        for (Pawn p : pedoni) {
+        // disegno i pezzi bianchi
+        for (Piece p : pezziBianchi) {
             p.draw(g, margine_sopra, margine_lati);
         }
 
-        // disegno i re
-        for (King k : re) {
-            k.draw(g, margine_sopra, margine_lati);
-        }
-
-        // disegno gli alfieri
-        for (Bishop b : alfieri) {
-            b.draw(g, margine_sopra, margine_lati);
-        }
-
-        // disegno i cavalli
-        for (Knight k : cavalli) {
-            k.draw(g, margine_sopra, margine_lati);
-        }
-
-        // disegno le torri
-        for (Rook r : torri) {
-            r.draw(g, margine_sopra, margine_lati);
-        }
-
-        // disegno le regine
-        for (Queen q : regine) {
-            q.draw(g, margine_sopra, margine_lati);
+        // disegno i pezzi neri
+        for (Piece p : pezziNeri) {
+            p.draw(g, margine_sopra, margine_lati);
         }
 
         // Lettere a - h
@@ -251,61 +228,18 @@ public class Canvas extends JPanel {
             contaClick++;
 
             // seleziona il pezzo
-            for (Pawn p : pedoni) {
+            for (Piece p : pezziBianchi) {
                 if (p.getRow() == row && p.getCol() == col) {
-                    System.out.println("Hai selezionato un pedone!");
+                    System.out.println("Hai selezionato: " + p.getClass().getName());
                     pezzoSelezionato = p;
-                    return pezzoSelezionato;
-                }
-            }
-
-            for (Bishop b : alfieri) {
-                if (b.getRow() == row && b.getCol() == col) {
-                    System.out.println("Hai selezionato un alfiere!");
-                    pezzoSelezionato = b;
-                    return pezzoSelezionato;
-                }
-            }
-
-            for (Queen q : regine) {
-                if (q.getRow() == row && q.getCol() == col) {
-                    System.out.println("Hai selezionato una regina!");
-                    pezzoSelezionato = q;
-                    return pezzoSelezionato;
-                }
-            }
-
-            for (Knight n : cavalli) {
-                if (n.getRow() == row && n.getCol() == col) {
-                    System.out.println("Hai selezionato un cavallo!");
-                    pezzoSelezionato = n;
-                    return pezzoSelezionato;
-                }
-
-            }
-
-            for (Rook r : torri) {
-                if (r.getRow() == row && r.getCol() == col) {
-                    System.out.println("Hai selezionato una torre!");
-                    pezzoSelezionato = r;
-                    return pezzoSelezionato;
-                }
-            }
-
-            for (King k : re) {
-                if (k.getRow() == row && k.getCol() == col) {
-                    System.out.println("Hai selezionato il re!");
-                    pezzoSelezionato = k;
                     return pezzoSelezionato;
                 }
 
             }
 
         }
-
         // se il pezzo non è selezionato
         return null;
-
     }
 
     // metodo per muovere il pezzo
