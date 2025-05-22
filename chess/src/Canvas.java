@@ -258,7 +258,13 @@ public class Canvas extends JPanel {
             return;
         }
 
-        // VERIFICO SE SUL TRAGITTO C'E UN PEZZO CHE ROMPE E QUINDI NON SI PUO MUOVERE
+        // VERIFICO SE IL MOVIMENTO È BLOCCATO
+        if (eBloccato(pezzoSelezionato.getRow(), pezzoSelezionato.getCol(), destinazioneRow, destinazioneCol)) {
+            System.out.println("Movimento bloccato");
+            return;
+        }
+
+        // VERIFICO SE IL RE È IN SCACCO E QUINDI PINNATO
 
         // posizione iniziale del pezzo
         int oldRow = pezzoSelezionato.getRow();
@@ -302,4 +308,44 @@ public class Canvas extends JPanel {
         return mettiPezzo(row, col) != null;
     }
 
+    // Metodo per verificare se lo spostamento è impedito da un pezzo in mezzo
+    // Se pezzi come le torri, gli alfieri e la regina si muovono in diagonale, in verticale o in orizzontale
+
+    public boolean eBloccato(int sRow, int sCol, int eRow, int eCol) {
+        // direzione row e col
+        int dRow = 0;
+        int dCol = 0;
+
+        // direzione di movimento riga
+        if (eRow > sRow) {
+            dRow = 1;
+        } else if (eRow < sRow) {
+            dRow = -1;
+        }
+
+        // direzione di movimento colonna
+        if (eCol > sCol) {
+            dCol = 1;
+        } else if (eCol < sCol) {
+            dCol = -1;
+        }
+
+        // posizione corrente
+        int cRow = sRow + dRow;
+        int cCol = sCol + dCol;
+
+        // ciclo per controllare se ci sono pezzi in mezzo
+        while (cRow != eRow || cCol != eCol) {
+            // se la cella è occupata
+            if (mettiPezzo(cRow, cCol) != null) {
+                return true; // C'è un pezzo che blocca il cammino
+            }
+            // aggiorno la posizione corrente
+            cRow += dRow;
+            cCol += dCol;
+        }
+
+        return false; // Nessun ostacolo
+
+    }
 }
