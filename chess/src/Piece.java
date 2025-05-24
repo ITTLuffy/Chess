@@ -40,5 +40,6 @@ public abstract class Piece {
     // metodo astratto per verificare se la mossa è valida o meno
     public abstract boolean isValidMove(int destinazioneRow, int destinazioneCol);
 
-
+    // Metodo astratto per ottenere il carattere FEN del pezzo
+    public abstract char getFENChar();
 }

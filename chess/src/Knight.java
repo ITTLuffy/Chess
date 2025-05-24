@@ -67,4 +67,10 @@ public class Knight extends Piece {
         }
         return false;
     }
+
+    @Override
+    public char getFENChar() {
+        return 'N'; // Carattere FEN per il cavallo
+    }
+
 }

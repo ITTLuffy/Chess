@@ -64,4 +64,9 @@ public class Bishop extends Piece{
 
         return false;
     }
+
+    @Override
+    public char getFENChar() {
+        return 'B'; // Carattere FEN per l'alfiere
+    }
 }

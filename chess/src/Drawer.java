@@ -1,11 +1,11 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class Drawer {
 
     public static void main(String[] args) {
 
+        // Creazione della finestra principale
         JFrame frame = new JFrame("Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 790);
@@ -13,6 +13,7 @@ public class Drawer {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
 
+        // Testo di benvenuto
         String html = "<html><br><div style='text-align: center;'>Benvenuto in <br>CHESS</div></html>";
         JLabel label = new JLabel(html, JLabel.CENTER);
         label.setFont(new Font("Times new Roman", Font.BOLD, 40));
@@ -21,23 +22,19 @@ public class Drawer {
         label.setOpaque(true);
         frame.add(label, BorderLayout.NORTH);
 
+        // Pulsante nuova partita
         JPanel pulsantiera = new JPanel(new GridBagLayout());
         pulsantiera.setBackground(Color.GRAY);
         JButton nuovaPartita = new JButton("Nuova partita");
         nuovaPartita.setFont(new Font("Times new Roman", Font.BOLD, 30));
         nuovaPartita.setBackground(new Color(108, 187, 60));
         nuovaPartita.setForeground(Color.BLACK);
-        nuovaPartita.setFocusPainted(false); // rimuovo il bordino bianco che mi da fastidio
+        nuovaPartita.setFocusPainted(false); // rimuovo il bordino bianco che mi dà fastidio
         pulsantiera.add(nuovaPartita);
         frame.add(pulsantiera, BorderLayout.CENTER);
 
-        nuovaPartita.addActionListener(e -> {
-            frame.getContentPane().removeAll();  // Rimuove tutto ciò che era visibile prima
-            frame.getContentPane().add(new Canvas(), BorderLayout.CENTER);  // Aggiunge la scacchiera
-            frame.revalidate();
-            frame.repaint();
-        });
 
+        // Copyright e autore
         String html2 = "<html><div style='text-align: center;'>A cura di: Alessio Ferrari </div>" +
                 "<div style='text-align: center;'>&copy; 2025 <br></html>";
         JLabel label2 = new JLabel(html2, JLabel.CENTER);
@@ -46,6 +43,15 @@ public class Drawer {
         label2.setForeground(Color.BLACK);
         label2.setOpaque(true);
         frame.add(label2, BorderLayout.SOUTH);
+
+
+        // Inizio partita
+        nuovaPartita.addActionListener(e -> {
+            frame.getContentPane().removeAll();  // Rimuove tutto ciò che era visibile prima
+            frame.getContentPane().add(new Canvas(), BorderLayout.CENTER);  // Aggiunge la scacchiera
+            frame.revalidate();
+            frame.repaint();
+        });
 
 
         frame.setVisible(true);

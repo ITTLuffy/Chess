@@ -77,4 +77,10 @@ public class Pawn extends Piece{
 
     }
 
+    @Override
+    public char getFENChar() {
+        return 'P'; // Carattere FEN per il pedone
+    }
+
+
 }

@@ -68,4 +68,10 @@ public class Queen extends Piece {
 
         return false;
     }
+
+    @Override
+    public char getFENChar() {
+        return 'Q'; // Carattere FEN per la regina
+    }
+
 }

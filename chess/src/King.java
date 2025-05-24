@@ -68,4 +68,10 @@ public class King extends Piece {
 
         return false;
     }
+
+    @Override
+    public char getFENChar() {
+        return 'K'; // Carattere FEN per il re
+    }
+
 }

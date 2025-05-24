@@ -63,6 +63,12 @@ public class Rook extends Piece {
 
         return false;
     }
+
+    @Override
+    public char getFENChar() {
+        return 'R'; // Carattere FEN per la torre
+    }
+
 }
 
 
