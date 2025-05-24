@@ -44,10 +44,19 @@ public class Drawer {
         label2.setOpaque(true);
         frame.add(label2, BorderLayout.SOUTH);
 
+        // Nome giocatore nero
+        String html3 = "<html><div style='text-align: center;'>Giocatore Nero: <em>Stockfish</html>";
+        String html4 = "<html><div style='text-align: center;'>Giocatore Bianco: <em>Io</html>";
+        JLabel gNero = new JLabel(html3, JLabel.CENTER);
+        JLabel gBianco = new JLabel(html4, JLabel.CENTER);
+        gNero.setBackground(Color.gray);
+        gBianco.setBackground(Color.gray);
 
         // Inizio partita
         nuovaPartita.addActionListener(e -> {
             frame.getContentPane().removeAll();  // Rimuove tutto ciò che era visibile prima
+            frame.getContentPane().add(gNero, BorderLayout.NORTH);
+            frame.getContentPane().add(gBianco, BorderLayout.SOUTH);
             frame.getContentPane().add(new Canvas(), BorderLayout.CENTER);  // Aggiunge la scacchiera
             frame.revalidate();
             frame.repaint();

@@ -2,8 +2,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 // import java.util.Timer;
 import javax.swing.JPanel;
@@ -260,6 +258,8 @@ public class Canvas extends JPanel {
             return;
         }
 
+        // VERIFICO SE IL PEZZO È BLOCCATO
+        pezzoBloccato(destinazioneRow, destinazioneCol);
         // VERIFICO SE IL RE È IN SCACCO E QUINDI PINNATO
 
         // posizione iniziale del pezzo
@@ -307,5 +307,12 @@ public class Canvas extends JPanel {
     // Metodo per verificare se lo spostamento è impedito da un pezzo in mezzo
     // Se pezzi come le torri, gli alfieri e la regina si muovono in diagonale, in verticale o in orizzontale
 
+    public void pezzoBloccato(int row, int col) {
+        // controllo se quando si muovono i pezzi TORRE, REGINA E ALFIERE
+        if (pezzoSelezionato.getClass() == Bishop.class || pezzoSelezionato.getClass() == Queen.class ||
+        pezzoSelezionato.getClass() == Rook.class) {
+            // controllo se la riga / la colonna è occupata
+        }
+    }
 
 }
