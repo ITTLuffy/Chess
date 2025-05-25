@@ -259,7 +259,11 @@ public class Canvas extends JPanel {
         }
 
         // VERIFICO SE IL PEZZO È BLOCCATO
-        pezzoBloccato(destinazioneRow, destinazioneCol);
+        if (pezzoBloccato(destinazioneRow, destinazioneCol)) {
+            System.out.println("Il pezzo è bloccato da un altro pezzo");
+            return;
+        }
+
         // VERIFICO SE IL RE È IN SCACCO E QUINDI PINNATO
 
         // posizione iniziale del pezzo
@@ -307,12 +311,53 @@ public class Canvas extends JPanel {
     // Metodo per verificare se lo spostamento è impedito da un pezzo in mezzo
     // Se pezzi come le torri, gli alfieri e la regina si muovono in diagonale, in verticale o in orizzontale
 
-    public void pezzoBloccato(int row, int col) {
-        // controllo se quando si muovono i pezzi TORRE, REGINA E ALFIERE
-        if (pezzoSelezionato.getClass() == Bishop.class || pezzoSelezionato.getClass() == Queen.class ||
-        pezzoSelezionato.getClass() == Rook.class) {
-            // controllo se la riga / la colonna è occupata
+    public boolean pezzoBloccato(int destRow, int destCol) {
+        int startRow = pezzoSelezionato.getRow();
+        int startCol = pezzoSelezionato.getCol();
+
+        // Torre --> movimento orizzontale/verticale
+        if (pezzoSelezionato.getClass() == Rook.class) {
+            return controllaDiagonale(startRow, startCol, destRow, destCol);
         }
+        // Alfiere --> movimento diagonale
+        else if (pezzoSelezionato.getClass() == Bishop.class) {
+            return controllaDiagonale(startRow, startCol, destRow, destCol);
+        }
+        // Regina --> movimento orizzontale/verticale o diagonale
+        else if (pezzoSelezionato.getClass() == Queen.class) {
+            // Orizzontale o verticale
+            if (startRow == destRow || startCol == destCol) {
+                return controllaDiagonale(startRow, startCol, destRow, destCol);
+            }
+            // Diagonale
+            else {
+                return controllaDiagonale(startRow, startCol, destRow, destCol);
+            }
+        }
+
+        // Altri pezzi
+        return false;
+    }
+
+    private boolean controllaDiagonale(int startRow, int startCol, int destRow, int destCol) {
+        // Calcolo il passo di movimento per riga e colonna
+        int rowStep = (destRow > startRow) ? 1 : -1;
+        int colStep = (destCol > startCol) ? 1 : -1;
+
+        // Imposto la prima casella da controllare (dopo quella di partenza)
+        int row = startRow + rowStep;
+        int col = startCol + colStep;
+
+        // Controllo tutte le caselle lungo il percorso
+        while (row != destRow && col != destCol) {
+            if (eOccupato(row, col)) {
+                return true; // Path is blocked
+            }
+            row += rowStep;
+            col += colStep;
+        }
+
+        return false; // Percorso libero
     }
 
 }
