@@ -4,7 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 // import java.util.Timer;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
 // Logica --> si hanno 2 click
