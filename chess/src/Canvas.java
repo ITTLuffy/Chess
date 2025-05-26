@@ -187,12 +187,20 @@ public class Canvas extends JPanel {
         // disegno la scacchiera
         for (int row = 0; row < scacchiera.length; row++) {
             for (int col = 0; col < scacchiera[0].length; col++) {
+                // calcolo le coordinate della cella
+                int x = col * dimCella + margine_lati;
+                int y = row * dimCella + margine_sopra;
 
                 // colori alternati
                 if ((row + col) % 2 == 0) {
                     g.setColor(new Color(108, 187, 60));
                 } else {
                     g.setColor(new Color(92, 168, 42));
+                }
+
+                if (scacchiera[row][col] == 2) {
+                    g.setColor(new Color(255, 0, 0, 128));
+                    g.drawRect(x, y, dimCella, dimCella);
                 }
 
                 // disegno la cella
