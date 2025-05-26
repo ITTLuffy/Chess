@@ -360,4 +360,18 @@ public class Canvas extends JPanel {
         return false; // Percorso libero
     }
 
+    private boolean sottoScacco() {
+        // Controlla se il re è sotto scacco
+        // Da implementare
+        return false;
+    }
+
+    private boolean rePinnato() {
+        // Controlla se il re è pinato
+        // Da implementare
+        return false;
+    }
+
+
+
 }
