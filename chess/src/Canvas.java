@@ -146,6 +146,36 @@ public class Canvas extends JPanel {
             }
 
         });
+        // Possibilità di evidenziare una cella di rosso quando si clicca tasto destro su un pezzo
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    // Azione per il click del tasto destro
+                    System.out.println("Hai cliccato con il tasto destro!");
+                    // Coordinate del click
+                    int mouseX = e.getX();
+                    int mouseY = e.getY();
+
+                    // Trovo la cella
+                    int col = (mouseX - margine_lati) / dimCella;
+                    int row = (mouseY - margine_sopra) / dimCella;
+
+                    // Evidenzio la cella selezionata
+                    if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+                        // Se già evidenziata, la deseleziona
+                        if (scacchiera[row][col] == 2) {
+                            scacchiera[row][col] = 0;
+                        } else {
+                            scacchiera[row][col] = 2;
+                        }
+                    }
+
+                    // Ridisegno la cella
+                    repaint(col * dimCella + margine_lati, row * dimCella + margine_sopra, dimCella, dimCella);
+                }
+            }
+        });
     }
 
     @Override
