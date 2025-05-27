@@ -3,7 +3,6 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-// import java.util.Timer;
 import javax.swing.*;
 
 
@@ -408,6 +407,15 @@ public class Canvas extends JPanel {
         // Controlla se il re è pinato
         // Da implementare
         return false;
+    }
+
+    private boolean arrocco() {
+        // arrocco lungo
+        // arrocco corto
+    }
+
+    private boolean enPassant() {
+        // en Passant
     }
 
 
