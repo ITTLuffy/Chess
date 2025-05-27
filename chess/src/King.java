@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 public class King extends Piece {
 
     private Image immagine;
+    private boolean haMosso = false; // Movimento
 
     public King(boolean colore, int row, int col) {
         super(colore, row, col);
@@ -44,6 +45,14 @@ public class King extends Piece {
         super.setCol(col);
     }
 
+    public boolean getHaMosso() {
+        return haMosso;
+    }
+
+    public void setHaMosso(boolean haMosso) {
+        this.haMosso = haMosso;
+    }
+
     public void draw(Graphics g, int margineSopra, int margineLato) {
         int tileSize = 80;
         int x = col * tileSize + margineLato;
@@ -61,12 +70,13 @@ public class King extends Piece {
         // Se la differenza è 1 in una direzione e 0 nell'altra, è un movimento valido
         if (diffRow <= 1 && diffCol <= 1) {
 
-            
             // Escludo la possibilità che il re stia fermo nella stessa casella
             return diffRow != 0 || diffCol != 0;
         }
 
-        return false;
+        // Verifica per l'arrocco
+        // Si può fare anche un IF, ma l'ho semplificato in un return
+        return diffRow == 0 && diffCol == 2 && !haMosso;
     }
 
     @Override
