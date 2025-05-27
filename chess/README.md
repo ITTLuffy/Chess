@@ -33,3 +33,9 @@ Così si può giocare da una macchina server a una macchina client.
 - Gestire metodo isValidMove altri pezzi
 - Gestire se pezzo selezionato, mostrare pallini bianchi x dove può muoversi
 
+
+
+
+
+# DA FARE
+- Sistemare la roba del movimento consentito oppure no
