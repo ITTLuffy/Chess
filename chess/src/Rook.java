@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 public class Rook extends Piece {
 
     private Image immagine;
+    private boolean haMosso = false; // Movimento
 
     public Rook(boolean colore, int row, int col) {
         super(colore, row, col);
@@ -43,6 +44,14 @@ public class Rook extends Piece {
         super.setCol(col);
     }
 
+    public boolean getHaMosso() {
+        return haMosso;
+    }
+
+    public void setHaMosso(boolean haMosso) {
+        this.haMosso = haMosso;
+    }
+
     public void draw(Graphics g, int margineSopra, int margineLato) {
         int tileSize = 80;
         int x = col * tileSize + margineLato;
@@ -56,12 +65,8 @@ public class Rook extends Piece {
 
         // Se c'è un pezzo davanti
         
-        // Può muoversi solo in orizzontale o verticale
-        if ((destinazioneCol != this.col && destinazioneRow == this.row) || (destinazioneRow != this.row && destinazioneCol == this.col)) {
-            return true;
-        }
-
-        return false;
+        // Può muoversi solo in orizzontale o verticale (SI PUO FARE ANCHE CON UN IF)
+        return (destinazioneCol != this.col && destinazioneRow == this.row) || (destinazioneRow != this.row && destinazioneCol == this.col);
     }
 
     @Override
