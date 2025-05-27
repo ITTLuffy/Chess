@@ -307,6 +307,91 @@ public class Canvas extends JPanel {
         int oldRow = pezzoSelezionato.getRow();
         int oldCol = pezzoSelezionato.getCol();
 
+        // Gestione dell'arrocco
+        boolean isArrocco = false; // booleana per verificare la VALIDITÀ
+        if (pezzoSelezionato instanceof King) {
+            King re = (King) pezzoSelezionato;
+            // Verifica se è un movimento di arrocco (2 caselle orizzontali)
+            if (Math.abs(destinazioneCol - oldCol) == 2 && destinazioneRow == oldRow) {
+                // Determina se è arrocco corto (verso destra) o lungo (verso sinistra)
+                boolean isArroccoCorto = destinazioneCol > oldCol;
+
+                // Posizione della torre coinvolta nell'arrocco
+                int torreCol = isArroccoCorto ? 7 : 0;
+                Piece possibileTorre = trovaPezzo(oldRow, torreCol);
+
+                // Verifica che ci sia una torre nella posizione corretta
+                if (possibileTorre instanceof Rook) {
+                    Rook torre = (Rook) possibileTorre;
+
+                    // Verifica che re e torre non si siano già mossi
+                    if (!re.getHaMosso() && !torre.getHaMosso()) {
+                        // Verifica che non ci siano pezzi tra il re e la torre
+                        boolean percorsoLibero = true;
+                        int start = Math.min(oldCol, torreCol) + 1;
+                        int end = Math.max(oldCol, torreCol);
+
+                        for (int col = start; col < end; col++) {
+                            if (eOccupato(oldRow, col)) {
+                                percorsoLibero = false;
+                                break;
+                            }
+                        }
+
+                        if (percorsoLibero) {
+                            // Esegui l'arrocco
+                            isArrocco = true;
+
+                            // Nuova posizione della torre dopo l'arrocco
+                            int nuovaColTorre = isArroccoCorto ? oldCol + 1 : oldCol - 1;
+
+                            // Muovi la torre
+                            torre.setCol(nuovaColTorre);
+                            torre.setHaMosso(true);
+
+                            // Aggiorna la scacchiera per la torre
+                            scacchiera[oldRow][torreCol] = 0;
+                            scacchiera[oldRow][nuovaColTorre] = 1;
+
+                            // Ridisegna la cella della torre
+                            int xTorre1 = torreCol * dimCella + margine_lati;
+                            int yTorre1 = oldRow * dimCella + margine_sopra;
+                            int xTorre2 = nuovaColTorre * dimCella + margine_lati;
+                            int yTorre2 = oldRow * dimCella + margine_sopra;
+
+                            repaint(xTorre1, yTorre1, dimCella, dimCella);
+                            repaint(xTorre2, yTorre2, dimCella, dimCella);
+
+                            System.out.println("Arrocco " + (isArroccoCorto ? "corto" : "lungo") + " eseguito");
+                        } else {
+                            System.out.println("Arrocco non possibile: ci sono pezzi tra il re e la torre");
+                            return;
+                        }
+                    } else {
+                        System.out.println("Arrocco non possibile: re o torre si sono già mossi");
+                        return;
+                    }
+                } else {
+                    System.out.println("Arrocco non possibile: torre non trovata");
+                    return;
+                }
+            }
+
+            // Imposta che il re si è mosso
+            re.setHaMosso(true);
+        }
+
+        // Se è una torre, segna che si è mossa
+        if (pezzoSelezionato instanceof Rook) {
+            ((Rook) pezzoSelezionato).setHaMosso(true);
+        }
+
+        // Modifica nel messaggio di output
+        if (!isArrocco) {
+            System.out.println("Pezzo messo in " + convertiMossa(destinazioneRow, destinazioneCol));
+        }
+
+
         // cambio la posizione del pezzo
         pezzoSelezionato.setRow(destinazioneRow);
         pezzoSelezionato.setCol(destinazioneCol);
@@ -318,7 +403,9 @@ public class Canvas extends JPanel {
         // azzero il pezzo selezionato
         pezzoSelezionato = null;
         // ack all'utente
-        System.out.println("Pezzo messo in " + convertiMossa(destinazioneRow, destinazioneCol));
+        if (!isArrocco) {
+            System.out.println("Pezzo messo in " + convertiMossa(destinazioneRow, destinazioneCol));
+        }
         // ridisegno solo le due celle interessate
         int x1 = oldCol * dimCella + margine_lati;
         int y1 = oldRow * dimCella + margine_sopra;
@@ -349,52 +436,69 @@ public class Canvas extends JPanel {
     // Se pezzi come le torri, gli alfieri e la regina si muovono in diagonale, in verticale o in orizzontale
 
     public boolean pezzoBloccato(int destRow, int destCol) {
+        // row e col di partenza
         int startRow = pezzoSelezionato.getRow();
         int startCol = pezzoSelezionato.getCol();
 
         // Torre --> movimento orizzontale/verticale
-        if (pezzoSelezionato.getClass() == Rook.class) {
-            return controllaDiagonale(startRow, startCol, destRow, destCol);
+        if (pezzoSelezionato instanceof Rook) {
+            return controllaPercorso(startRow, startCol, destRow, destCol);
         }
         // Alfiere --> movimento diagonale
-        else if (pezzoSelezionato.getClass() == Bishop.class) {
-            return controllaDiagonale(startRow, startCol, destRow, destCol);
+        else if (pezzoSelezionato instanceof Bishop) {
+            return controllaPercorso(startRow, startCol, destRow, destCol);
         }
         // Regina --> movimento orizzontale/verticale o diagonale
-        else if (pezzoSelezionato.getClass() == Queen.class) {
-            // Orizzontale o verticale
-            if (startRow == destRow || startCol == destCol) {
-                return controllaDiagonale(startRow, startCol, destRow, destCol);
-            }
-            // Diagonale
-            else {
-                return controllaDiagonale(startRow, startCol, destRow, destCol);
-            }
+        else if (pezzoSelezionato instanceof Queen) {
+            return controllaPercorso(startRow, startCol, destRow, destCol);
         }
 
-        // Altri pezzi
+        // Altri pezzi (Cavallo, Re, Pedone) non hanno bisogno di questo controllo
         return false;
     }
 
-    private boolean controllaDiagonale(int startRow, int startCol, int destRow, int destCol) {
-        // Calcolo il passo di movimento per riga e colonna
-        int rowStep = (destRow > startRow) ? 1 : -1;
-        int colStep = (destCol > startCol) ? 1 : -1;
+    private boolean controllaPercorso(int startRow, int startCol, int destRow, int destCol) {
+        // Calcola il passo di movimento
+        int rowStep = 0;
+        int colStep = 0;
 
-        // Imposto la prima casella da controllare (dopo quella di partenza)
+        // Direzione di movimento del pezzo sulla scacchiera
+        if (startRow != destRow) {
+            rowStep = (destRow > startRow) ? 1 : -1;
+        }
+
+        if (startCol != destCol) {
+            colStep = (destCol > startCol) ? 1 : -1;
+        }
+
+        // Imposta la RIGA E LA COLONNA da controllare
         int row = startRow + rowStep;
         int col = startCol + colStep;
 
-        // Controllo tutte le caselle lungo il percorso
-        while (row != destRow && col != destCol) {
+        // Controlla tutte le caselle lungo il percorso
+        while (row != destRow || col != destCol) {
+            // Controlla se la casella è occupata
             if (eOccupato(row, col)) {
-                return true; // Path is blocked
+                return true; // Percorso bloccato
             }
+
+            // Avanza alla casella successiva
             row += rowStep;
             col += colStep;
         }
 
         return false; // Percorso libero
+    }
+
+    // Metodo per trovare un pezzo specifico in base alla riga e colonna
+    public Piece trovaPezzo(int row, int col) {
+        // Cerca il pezzo nell'ArrayList di pezzi
+        for (Piece p : pezziBianchi) { //
+            if (p.getRow() == row && p.getCol() == col) {
+                return p;
+            }
+        }
+        return null; // Nessun pezzo trovato
     }
 
     private boolean sottoScacco() {
@@ -404,18 +508,15 @@ public class Canvas extends JPanel {
     }
 
     private boolean rePinnato() {
-        // Controlla se il re è pinato
+        // Controlla se il re è pinnato
         // Da implementare
         return false;
     }
 
-    private boolean arrocco() {
-        // arrocco lungo
-        // arrocco corto
-    }
-
     private boolean enPassant() {
         // en Passant
+        // Da implementare
+        return false;
     }
 
 
