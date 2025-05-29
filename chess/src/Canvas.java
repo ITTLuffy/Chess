@@ -502,20 +502,45 @@ public class Canvas extends JPanel {
     }
 
     private boolean sottoScacco() {
-        // Controlla se il re è sotto scacco
+    
+        // Trovo le coordinate del re bianco
+        for (Piece p : pezziBianchi) {
+            if (p instanceof King) {
+                int col = p.getCol();
+                int row = p.getRow();
+            }
+        }
+        // Trovo i pezzi neri che sono sulla stessa diagonale, verticale, traversa + pedone
+
+        // Vedo se il re è a diretto "contatto" con loro
+
+        // Ritorno il risultato
         // Da implementare
         return false;
     }
 
     private boolean rePinnato() {
         // Controlla se il re è pinnato
-        // Da implementare
+        
+        // Trovo le coordinate del re bianco
+        for (Piece p : pezziBianchi) {
+            if (p instanceof King) {
+                int col = p.getCol();
+                int row = p.getRow();
+            }
+        }
+
+        
         return false;
     }
 
     private boolean enPassant() {
         // en Passant
         // Da implementare
+        return false;
+    }
+
+    private boolean stallo() {
         return false;
     }
 

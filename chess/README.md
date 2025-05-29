@@ -37,5 +37,16 @@ Così si può giocare da una macchina server a una macchina client.
 
 
 
-# DA FARE
-- Sistemare la roba del movimento consentito oppure no
+
+
+
+
+
+
+
+## SISTEMARE
+- Gestione click, se si sbaglia bisogna far ripartire tutto
+- Giocatore nero, multiplayer o stockfish?
+- Finire i 3 metodi nel Canvas
+- Tempo
+- 
