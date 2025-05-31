@@ -13,7 +13,6 @@ public class Rook extends Piece {
     public Rook(boolean colore, int row, int col) {
         super(colore, row, col);
 
-        //
         try {
             if (colore) {
                 immagine = ImageIO.read(Objects.requireNonNull(getClass().getResource("immagini/Chess_rlt45.svg.png")));
@@ -62,9 +61,6 @@ public class Rook extends Piece {
 
     @Override
     public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
-
-        // Se c'è un pezzo davanti
-        
         // Può muoversi solo in orizzontale o verticale (SI PUO FARE ANCHE CON UN IF)
         return (destinazioneCol != this.col && destinazioneRow == this.row) || (destinazioneRow != this.row && destinazioneCol == this.col);
     }
