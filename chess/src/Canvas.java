@@ -251,12 +251,10 @@ public class Canvas extends JPanel {
     // metodo che seleziona un pezzo
     public Piece selezionaPezzo(int row, int col) {
         // logica per muovere il pezzo
-        // 1. controlla se la mossa è valida --> DA FARE
+        // 1. controlla se la mossa è valida --> OKAY
         // 2. muovi il pezzo --> OKAY
         // 3. aggiorna la scacchiera --> OKAY
         // 4. ridisegna la scacchiera --> OKAY
-        // 5. rendere possibile muovere + pezzi
-
 
         // seleziona il pezzo
         int clickMassimi = 2;
@@ -264,15 +262,24 @@ public class Canvas extends JPanel {
             // click 1
             contaClick++;
 
-            // seleziona il pezzo
+            // seleziona il pezzo BIANCO
             for (Piece p : pezziBianchi) {
                 if (p.getRow() == row && p.getCol() == col) {
                     System.out.println("Hai selezionato: " + p.getClass().getName());
                     pezzoSelezionato = p;
                     return pezzoSelezionato;
                 }
-
             }
+
+            // seleziona il pezzo NERO
+            for (Piece p : pezziNeri) {
+                if (p.getRow() == row && p.getCol() == col) {
+                    System.out.println("Hai selezionato: " + p.getClass().getName());
+                    pezzoSelezionato = p;
+                    return pezzoSelezionato;
+                }
+            }
+
 
         }
         // se il pezzo non è selezionato
@@ -424,6 +431,11 @@ public class Canvas extends JPanel {
                 return p;
             }
         }
+        for (Piece p : pezziNeri) {
+            if (p.getRow() == row && p.getCol() == col) {
+                return p;
+            }
+        }
         return null;
     }
 
@@ -498,6 +510,11 @@ public class Canvas extends JPanel {
                 return p;
             }
         }
+        for (Piece p : pezziNeri) {
+            if (p.getRow() == row && p.getCol() == col) {
+                return p;
+            }
+        }
         return null; // Nessun pezzo trovato
     }
 
@@ -510,6 +527,7 @@ public class Canvas extends JPanel {
                 int row = p.getRow();
             }
         }
+
         // Trovo i pezzi neri che sono sulla stessa diagonale, verticale, traversa + pedone
 
         // Vedo se il re è a diretto "contatto" con loro
