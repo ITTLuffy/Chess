@@ -45,6 +45,10 @@ public class Pawn extends Piece{
         super.setCol(col);
     }
 
+    public boolean getColor() {
+        return super.getColor();
+    }
+
     // metodo per disegnare il pezzo
     public void draw(Graphics g, int margineSopra, int margineLato) {
         int tileSize = 80;
@@ -57,24 +61,21 @@ public class Pawn extends Piece{
     @Override
     public boolean isValidMove(int destinazioneRow, int destinazioneCol) { // COSIDERIAMO SOLO I BIANCHI
         // pedone può muoversi solo in avanti
-        // da gestire LA CATTURA
         if (destinazioneCol != col) {
             return false;
         }
 
-        // Una casella in avanti
-        if (destinazioneRow == this.row - 1) {
-            return true;
+        int dRow = destinazioneRow - getRow();// delta row
+
+        if (getColor()) { // BIANCO
+            if (dRow == -1) return true; // movimento singolo in avanti
+            if (getRow() == 6 && dRow == -2) return true; // movimento doppio in avanti
+        } else { // NERO
+            if (dRow == 1) return true; // movimento singolo in avanti
+            if (getRow() == 1 && dRow == 2) return true; // movimento doppio in avanti
         }
 
-        // Due caselle in avanti dalla riga di partenza (riga 6)
-        if (this.row == 6 && destinazioneRow == this.row - 2) {
-            return true;
-        }
-
-        // Qualsiasi altro caso è invalido
         return false;
-
     }
 
     @Override
