@@ -64,19 +64,16 @@ public class King extends Piece {
     @Override
     public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
         // Può muoversi in qualsiasi direzione, ma solo di una casella
-        int diffRow = Math.abs(destinazioneRow - this.row); // valore assoluto differenza
-        int diffCol = Math.abs(destinazioneCol - this.col); // valore assoluto differenza
+        int diffRow = Math.abs(destinazioneRow - this.row); // valore assoluto row
+        int diffCol = Math.abs(destinazioneCol - this.col); // valore assoluto col
 
         // Se la differenza è 1 in una direzione e 0 nell'altra, è un movimento valido
         if (diffRow <= 1 && diffCol <= 1) {
-
             // Escludo la possibilità che il re stia fermo nella stessa casella
             return diffRow != 0 || diffCol != 0;
         }
-
-        // Verifica per l'arrocco
         // Si può fare anche un IF, ma l'ho semplificato in un return
-        return diffRow == 0 && diffCol == 2 && !haMosso;
+        return diffRow == 0 && diffCol == 2 && !haMosso; // Movimento e arrocco
     }
 
     @Override
