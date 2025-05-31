@@ -56,10 +56,9 @@ public class Knight extends Piece {
 
     @Override
     public boolean isValidMove(int destinazioneRow, int destinazioneCol) {
-
         // Il cavallo si muove a L
-        int diffRow = Math.abs(destinazioneRow - this.row);
-        int diffCol = Math.abs(destinazioneCol - this.col);
+        int diffRow = Math.abs(destinazioneRow - this.row); // Differenza tra la riga di partenza e quella di destinazione
+        int diffCol = Math.abs(destinazioneCol - this.col); // Differenza tra la colonna di partenza e quella di destinazione
 
         // Il cavallo si muove o 2 righe e 1 colonna, oppure 1 riga e 2 colonne
         if ((diffRow == 2 && diffCol == 1) || (diffRow == 1 && diffCol == 2)) {
