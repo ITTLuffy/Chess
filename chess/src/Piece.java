@@ -34,6 +34,10 @@ public abstract class Piece {
         this.col = col;
     }
 
+    public boolean getColor() {
+        return color;
+    }
+
     // metodo astratto per disegnare il pezzo
     public abstract void draw(Graphics g, int margineSopra, int margineLato);
 
