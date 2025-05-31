@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -9,11 +8,6 @@ import javax.swing.*;
 // Logica --> si hanno 2 click
 // 1. selezionare il pezzo
 // 2. selezionare la cella di destinazione
-// IMPLEMENTARE DRAG E DROP?
-// Idea, serverino con socket, che possa giocare con più persone
-// I pezzi del nero verranno gestiti da un AI di nome STOCKFISH, da implementare
-
-// gestire il sistema a turni bianco e nero con timer
 
 public class Canvas extends JPanel {
 
@@ -21,8 +15,8 @@ public class Canvas extends JPanel {
     private final int[][] scacchiera;
 
     // margini della scacchiera
-    private final int margine_sopra = 55;
-    private final int margine_lati = 23;
+    private final int margine_sopra = 25;
+    private final int margine_lati = 20;
 
     // dimensione della cella
     private final int dimCella = 80;
@@ -32,8 +26,9 @@ public class Canvas extends JPanel {
     private final ArrayList<Piece> pezziNeri;
 
 
-    // TIMER per gestire il tempo (da gestire rapid, blitz, bullet, ecc.)
-    // private Timer t;
+    // TIMER per gestire il tempo
+    private Timer tNero;
+    private Timer tBianco;
 
     // click
     private int contaClick = 0;
@@ -47,8 +42,6 @@ public class Canvas extends JPanel {
     // boolean x colore cella scacchiera
     // true --> bianco
     // false --> nero
-    // private boolean coloreCella = false;
-
 
     public Canvas() {
         // sfondo grigio
@@ -106,7 +99,6 @@ public class Canvas extends JPanel {
         pezziBianchi.add(new Queen(true, 7, 3)); // regina bianco
 
         // listener pezzi
-        // DRAG AND DROP?
         addMouseListener(new MouseAdapter() {
             // metodo per quando si preme il mouse
             @Override
@@ -145,6 +137,7 @@ public class Canvas extends JPanel {
             }
 
         });
+
         // Possibilità di evidenziare una cella di rosso quando si clicca tasto destro su un pezzo
         addMouseListener(new MouseAdapter() {
             @Override
@@ -220,20 +213,20 @@ public class Canvas extends JPanel {
         }
 
         // Lettere a - h
-        g.setColor(Color.BLACK);
-        g.setFont(g.getFont().deriveFont(18f));
-        for (int col = 0; col < 8; col++) {
-            char lettera = (char) ('a' + col);
-            int x = col * dimCella + margine_lati + dimCella / 2 - 5;
-            int y = margine_sopra + 8 * dimCella + 20; // sotto la scacchiera
+        g.setColor(Color.BLACK); // colore
+        g.setFont(new Font("Times new Roman", Font.PLAIN, 25)); // dimensione del font
+        for (int col = 0; col < 8; col++) { // ciclo per le colonne
+            char lettera = (char) ('a' + col); // converto in lettere da 'a' a 'h'
+            int x = col * dimCella + margine_lati + dimCella / 2 - 5; // al centro della cella
+            int y = margine_sopra + 8 * dimCella + 25; // sotto la scacchiera
             g.drawString(String.valueOf(lettera), x, y);
         }
 
         // Numeri 8-1
-        for (int row = 0; row < 8; row++) {
-            int numero = 8 - row;
-            int x = margine_lati - 15;
-            int y = row * dimCella + margine_sopra + dimCella / 2 + 5;
+        for (int row = 0; row < 8; row++) { // ciclo per le righe
+            int numero = 8 - row; // converto in numeri
+            int x = margine_lati - 17; // a sinistra della scacchiera
+            int y = row * dimCella + margine_sopra + dimCella / 2 + 5; // al centro della cella
             g.drawString(String.valueOf(numero), x, y);
         }
 
@@ -283,6 +276,9 @@ public class Canvas extends JPanel {
 
         }
         // se il pezzo non è selezionato
+        System.out.println("Nessun pezzo selezionato in " + convertiMossa(row, col));
+        // resetto il contatore dei click
+        contaClick = 0;
         return null;
     }
 
