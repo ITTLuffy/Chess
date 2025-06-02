@@ -51,35 +51,11 @@ public class Drawer {
         gNero.setBackground(Color.gray);
         gBianco.setBackground(Color.gray);
 
-        // Timer per il giocatore nero e bianco
-        JLabel timerNero = new JLabel("10:00", JLabel.CENTER);
-        JLabel timerBianco = new JLabel("10:00", JLabel.CENTER);
-        timerNero.setFont(new Font("Times new Roman", Font.BOLD, 40));
-        timerBianco.setFont(new Font("Times new Roman", Font.BOLD, 40));
-        timerNero.setForeground(Color.BLACK);
-        timerBianco.setForeground(Color.BLACK);
-        timerNero.setBackground(Color.GRAY);
-        timerBianco.setBackground(Color.GRAY);
-        timerNero.setOpaque(true);
-        timerBianco.setOpaque(true);
-
-        // Pannello per i timer
-        JPanel pannelloTimer = new JPanel();
-        pannelloTimer.setLayout(new BoxLayout(pannelloTimer, BoxLayout.Y_AXIS));
-        pannelloTimer.setBackground(Color.GRAY);
-        pannelloTimer.add(Box.createVerticalGlue());
-        pannelloTimer.add(timerNero, JPanel.CENTER_ALIGNMENT);
-        pannelloTimer.add(Box.createVerticalStrut(20));
-        pannelloTimer.add(timerBianco, JPanel.CENTER_ALIGNMENT);
-        pannelloTimer.add(Box.createVerticalGlue());
-
-
         // Inizio partita
         nuovaPartita.addActionListener(e -> {
             frame.getContentPane().removeAll();  // Rimuove tutto ciò che era visibile prima
             frame.getContentPane().add(gNero, BorderLayout.NORTH);
             frame.getContentPane().add(gBianco, BorderLayout.SOUTH);
-            frame.getContentPane().add(pannelloTimer, BorderLayout.EAST); // Aggiunge entrambi i timer a destra
             frame.getContentPane().add(new Canvas(), BorderLayout.CENTER);  // Aggiunge la scacchiera
             frame.revalidate();
             frame.repaint();
