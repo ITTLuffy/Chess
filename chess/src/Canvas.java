@@ -332,6 +332,20 @@ public class Canvas extends JPanel {
             tNero.stop();
         }
 
+        // CONTROLLO SCACCO
+        if (turnoBianco && sottoScaccoBianco()) {
+            System.out.println("Mossa non valida: Re Bianco sotto scacco!");
+            if (!turnoBianco) tNero.start();
+            else tBianco.start();
+            return;
+        }
+        if (!turnoBianco && sottoScaccoNero()) {
+            System.out.println("Mossa non valida: Re Nero sotto scacco!");
+            if (!turnoBianco) tNero.start();
+            else tBianco.start();
+            return;
+        }
+
         // TURNO DEL GIOCATORE
         if (pezzoSelezionato.getColor() != turnoBianco) {
             System.out.println("Non è il tuo turno!");
@@ -357,9 +371,6 @@ public class Canvas extends JPanel {
             System.out.println("Il pezzo è bloccato da un altro pezzo");
             return;
         }
-
-        // VERIFICO SE IL RE È IN SCACCO
-
 
         // VERIFICO SE IL PEZZO È PINNATO
 
@@ -418,15 +429,14 @@ public class Canvas extends JPanel {
                             // Nuova posizione della torre dopo l'arrocco
                             int nuovaColTorre;
                             if (isArroccoCorto) { // arrocco corto
-                                nuovaColTorre = oldCol + 1;
+                                    nuovaColTorre = oldCol + 1;
                             } else { // arrocco lungo
-                                nuovaColTorre = oldCol - 1;
+                                    nuovaColTorre = oldCol - 1;
                             }
 
                             // Muovi la torre
                             torre.setCol(nuovaColTorre);
                             torre.setHaMosso(true);
-
                             // Aggiorna la scacchiera per la torre
                             scacchiera[oldRow][torreCol] = 0; // metto a zero la posizione vecchia della torre
                             scacchiera[oldRow][nuovaColTorre] = 1; // metto a uno la posizione nuova della torre
@@ -647,6 +657,7 @@ public class Canvas extends JPanel {
         }
         return false;
     }
+
 
 
     private boolean rePinnato() {
