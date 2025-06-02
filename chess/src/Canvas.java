@@ -602,24 +602,52 @@ public class Canvas extends JPanel {
         return null; // Nessun pezzo trovato
     }
 
-    private boolean sottoScacco() {
-    
-        // Trovo le coordinate del re bianco
+    // Controlla se il re bianco è sotto scacco
+    private boolean sottoScaccoBianco() {
+        // Trovo il re bianco
+        King reBianco = null;
         for (Piece p : pezziBianchi) {
             if (p instanceof King) {
-                int col = p.getCol();
-                int row = p.getRow();
+                reBianco = (King) p;
+                break;
             }
         }
+        // Se null
+        if (reBianco == null)
+            return false;
 
-        // Trovo i pezzi neri che sono sulla stessa diagonale, verticale, traversa + pedone
-
-        // Vedo se il re è a diretto "contatto" con loro
-
-        // Ritorno il risultato
-        // Da implementare
+        // Verifica se qualche pezzo nero minaccia il re bianco
+        for (Piece p : pezziNeri) {
+            if (p.isValidMove(reBianco.getRow(), reBianco.getCol())) {
+                return true;
+            }
+        }
         return false;
     }
+
+    // Controlla se il re nero è sotto scacco
+    private boolean sottoScaccoNero() {
+        // Trovo il re nero
+        King reNero = null;
+        for (Piece p : pezziNeri) {
+            if (p instanceof King) {
+                reNero = (King) p;
+                break;
+            }
+        }
+        // Se null
+        if (reNero == null)
+            return false;
+
+        // Verifica se qualche pezzo bianco minaccia il re nero
+        for (Piece p : pezziBianchi) {
+            if (p.isValidMove(reNero.getRow(), reNero.getCol())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private boolean rePinnato() {
         // Controlla se il re è pinnato
@@ -643,6 +671,13 @@ public class Canvas extends JPanel {
     }
 
     private boolean stallo() {
+        // Se ci sono solo i re in gioco e nessun altro pezzo
+        // Oppure se ci sono i re in gioco con 1 alfiere o 1 cavallo
+        if (pezziBianchi.size() == 1 && pezziNeri.size() == 1) {
+            // Solo i re in gioco
+            return true;
+        }
+
         return false;
     }
 
