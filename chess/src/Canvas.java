@@ -29,6 +29,11 @@ public class Canvas extends JPanel {
     // TIMER per gestire il tempo
     private Timer tNero;
     private Timer tBianco;
+    private int tempoBianco = 600; // tempo in secondi per il giocatore bianco
+    private int tempoNero = 600; // tempo in secondi per il giocatore nero
+    // gestione turni
+    private boolean turnoBianco = true; // true --> turno bianco, false --> turno nero
+    private int nTurni = 0; // per contare il numero di turni
 
     // click
     private int contaClick = 0;
@@ -97,6 +102,31 @@ public class Canvas extends JPanel {
 
         pezziNeri.add(new Queen(false, 0, 3)); // regina nero
         pezziBianchi.add(new Queen(true, 7, 3)); // regina bianco
+
+        tBianco = new Timer(1000, e -> {
+            if (turnoBianco) {
+                tempoBianco--;
+            }
+            // Ridisegna per aggiornare il display del tempo
+            repaint();
+            if (tempoBianco <= 0) {
+                tBianco.stop();
+                JOptionPane.showMessageDialog(this, "Tempo scaduto per il Bianco! Nero vince.");
+            }
+
+        });
+
+        tNero = new Timer(1000, e -> {
+            if (!turnoBianco) {
+                tempoNero--;
+            }
+            // Ridisegna per aggiornare il display del tempo
+            repaint(); //
+            if (tempoNero <= 0) {
+                tNero.stop();
+                JOptionPane.showMessageDialog(this, "Tempo scaduto per il Nero! Bianco vince.");
+            }
+        });
 
         // listener pezzi
         addMouseListener(new MouseAdapter() {
@@ -168,6 +198,9 @@ public class Canvas extends JPanel {
                 }
             }
         });
+
+        // Avvio il timer del primo giocatore
+        tBianco.start();
     }
 
     @Override
@@ -230,6 +263,22 @@ public class Canvas extends JPanel {
             g.drawString(String.valueOf(numero), x, y);
         }
 
+        // Stampo il tempo rimanente per i giocatori
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Times new Roman", Font.BOLD, 30));
+        String tempoBiancoStr = String.format("B: %02d:%02d", tempoBianco / 60, tempoBianco % 60);
+        String tempoNeroStr = String.format("N: %02d:%02d", tempoNero / 60, tempoNero % 60);
+        // String.format() per formattare il tempo in minuti e secondi
+        // %02d:%02d significa che voglio 2 cifre per i minuti e 2 cifre per i secondi, con zeri iniziali se necessario
+
+        // Posizionamento a destra della scacchiera
+        int xTimer = margine_lati + 8 * dimCella + 10;
+        int yBianco = margine_sopra + 300;
+        int yNero = margine_sopra + 350;
+
+        g.drawString(tempoBiancoStr, xTimer, yBianco);
+        g.drawString(tempoNeroStr, xTimer, yNero);
+
     }
 
     // metodo per inserire la conversione in mosse di scacchi
@@ -284,7 +333,19 @@ public class Canvas extends JPanel {
 
     // metodo per muovere il pezzo
     public void muoviPezzo() {
-        // verifico che la mossa sia valida
+        if (turnoBianco) {
+            tBianco.stop();
+        } else {
+            tNero.stop();
+        }
+
+        // TURNO DEL GIOCATORE
+        if (pezzoSelezionato.getColor() != turnoBianco) {
+            System.out.println("Non è il tuo turno!");
+            contaClick = 0;
+            pezzoSelezionato = null;
+            return;
+        }
 
         // MOVIMENTO PEZZO CORRETTO
         if(!pezzoSelezionato.isValidMove(destinazioneRow, destinazioneCol)){
@@ -429,6 +490,17 @@ public class Canvas extends JPanel {
         repaint(x1, y1, dimCella, dimCella);
         repaint(x2, y2, dimCella, dimCella);
 
+        // Cambia turno
+        turnoBianco = !turnoBianco;
+        nTurni++;
+
+        // Avvia il timer del nuovo giocatore
+        if (turnoBianco) {
+            tBianco.start();
+        } else {
+            tNero.start();
+        }
+
     }
 
     // Metodo per verificare se una cella è occupata
@@ -569,6 +641,27 @@ public class Canvas extends JPanel {
     }
 
     private boolean stallo() {
+        return false;
+    }
+
+    private boolean scaccoMatto() {
+        // Scacco matto
+        // Da implementare
+        return false;
+    }
+
+    private boolean patta() {
+        // Patta
+        // Da implementare
+        return false;
+    }
+
+    private boolean gestioneTurni() {
+        // Inizia il bianco
+        tBianco.start();
+        if (turnoBianco) {
+            System.out.println("Turno del Nero");
+        }
         return false;
     }
 
