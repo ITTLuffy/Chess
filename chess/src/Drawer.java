@@ -44,7 +44,7 @@ public class Drawer {
         frame.add(label2, BorderLayout.SOUTH);
 
         // Nome giocatore nero e bianco
-        String html3 = "<html><div style='text-align: center;'>Giocatore Nero: <em>Stockfish</html>";
+        String html3 = "<html><div style='text-align: center;'>Giocatore Nero: <em>Tu</html>";
         String html4 = "<html><div style='text-align: center;'>Giocatore Bianco: <em>Io</html>";
         JLabel gNero = new JLabel(html3, JLabel.CENTER);
         JLabel gBianco = new JLabel(html4, JLabel.CENTER);
