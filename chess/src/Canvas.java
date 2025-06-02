@@ -4,33 +4,31 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 
-
-// Logica --> si hanno 2 click
-// 1. selezionare il pezzo
-// 2. selezionare la cella di destinazione
-
 public class Canvas extends JPanel {
 
-    // matrice x scacchiera
+    // matrice x scacchiera, 8 righe e 8 colonne
+    // 0 --> cella vuota
+    // 1 --> cella occupata da un pezzo
+    // 2 --> cella evidenziata (quando si clicca con il tasto destro)
     private final int[][] scacchiera;
 
     // margini della scacchiera
     private final int margine_sopra = 25;
     private final int margine_lati = 20;
 
-    // dimensione della cella
+    // dimensione cella
     private final int dimCella = 80;
 
     // arrayList x i pezzi
     private final ArrayList<Piece> pezziBianchi;
     private final ArrayList<Piece> pezziNeri;
 
-
     // TIMER per gestire il tempo
     private Timer tNero;
     private Timer tBianco;
-    private int tempoBianco = 600; // tempo in secondi per il giocatore bianco
-    private int tempoNero = 600; // tempo in secondi per il giocatore nero
+    // tempo in secondi per i giocatori
+    private int tempoBianco = 600;
+    private int tempoNero = 600;
     // gestione turni
     private boolean turnoBianco = true; // true --> turno bianco, false --> turno nero
     private int nTurni = 0; // per contare il numero di turni
@@ -41,12 +39,8 @@ public class Canvas extends JPanel {
     // pezzo selezionato
     private Piece pezzoSelezionato = null;
 
-    // pezzo da muovere
+    // coordinate di destinazione del pezzo selezionato
     private int destinazioneRow, destinazioneCol;
-
-    // boolean x colore cella scacchiera
-    // true --> bianco
-    // false --> nero
 
     public Canvas() {
         // sfondo grigio
@@ -55,8 +49,6 @@ public class Canvas extends JPanel {
         // inizializzo i vari array e arrayList, tra cui la scacchiera
         scacchiera = new int[8][8];
 
-        // INIZIALMENTE avevo fatto 1 arrayList per ogni pezzo, ovvero x i pedoni, i re, ecc.
-        // Ho deciso di creare 2 arrayList, uno per i pezzi bianchi e uno per i pezzi neri
         // Tutto questo x semplificare il codice e renderlo più leggibile
         pezziBianchi = new ArrayList<>();
         pezziNeri = new ArrayList<>();
@@ -105,7 +97,7 @@ public class Canvas extends JPanel {
 
         tBianco = new Timer(1000, e -> {
             if (turnoBianco) {
-                tempoBianco--;
+                tempoBianco--; // tempo che scorre
             }
             // Ridisegna per aggiornare il display del tempo
             repaint();
@@ -118,7 +110,7 @@ public class Canvas extends JPanel {
 
         tNero = new Timer(1000, e -> {
             if (!turnoBianco) {
-                tempoNero--;
+                tempoNero--; // tempo che scorre
             }
             // Ridisegna per aggiornare il display del tempo
             repaint(); //
@@ -149,11 +141,10 @@ public class Canvas extends JPanel {
                     // stampo quale cella è stata cliccata (row, col), utilizzando il metodo converti
                     System.out.print(convertiMossa(row, col) + " ");
 
-                    // condizioni per muovere il pezzo
+                    // condizioni per muovere il pezzo o selezionarlo
                     if (contaClick == 0) {
                         pezzoSelezionato = selezionaPezzo(row, col); // SELEZIONO IL PEZZO
                         if (pezzoSelezionato != null) { // se il pezzo è selezionato
-                            System.out.println("Pezzo selezionato"); // ack
                             contaClick = 1; // incremento il contatore
                         }
                     } else if (contaClick == 1 && pezzoSelezionato != null) {
@@ -223,6 +214,7 @@ public class Canvas extends JPanel {
                     g.setColor(new Color(92, 168, 42));
                 }
 
+                // cella rossa
                 if (scacchiera[row][col] == 2) {
                     g.setColor(new Color(255, 0, 0, 128));
                     g.drawRect(x, y, dimCella, dimCella);
@@ -252,7 +244,7 @@ public class Canvas extends JPanel {
             char lettera = (char) ('a' + col); // converto in lettere da 'a' a 'h'
             int x = col * dimCella + margine_lati + dimCella / 2 - 5; // al centro della cella
             int y = margine_sopra + 8 * dimCella + 25; // sotto la scacchiera
-            g.drawString(String.valueOf(lettera), x, y);
+            g.drawString(String.valueOf(lettera), x, y); // String.valueOf() per convertire il char in String
         }
 
         // Numeri 8-1
@@ -276,6 +268,7 @@ public class Canvas extends JPanel {
         int yBianco = margine_sopra + 300;
         int yNero = margine_sopra + 350;
 
+        // Disegno i tempi
         g.drawString(tempoBiancoStr, xTimer, yBianco);
         g.drawString(tempoNeroStr, xTimer, yNero);
 
@@ -293,13 +286,12 @@ public class Canvas extends JPanel {
     // metodo che seleziona un pezzo
     public Piece selezionaPezzo(int row, int col) {
         // logica per muovere il pezzo
-        // 1. controlla se la mossa è valida --> OKAY
-        // 2. muovi il pezzo --> OKAY
-        // 3. aggiorna la scacchiera --> OKAY
-        // 4. ridisegna la scacchiera --> OKAY
+        // 1 click --> seleziona il pezzo
+        // 2 click --> muove il pezzo
 
         // seleziona il pezzo
         int clickMassimi = 2;
+
         if (contaClick < clickMassimi) {
             // click 1
             contaClick++;
@@ -307,7 +299,7 @@ public class Canvas extends JPanel {
             // seleziona il pezzo BIANCO
             for (Piece p : pezziBianchi) {
                 if (p.getRow() == row && p.getCol() == col) {
-                    System.out.println("Hai selezionato: " + p.getClass().getName());
+                    System.out.println("Hai selezionato: " + p.getClass().getName()); // Pezzo selezionato
                     pezzoSelezionato = p;
                     return pezzoSelezionato;
                 }
@@ -316,14 +308,14 @@ public class Canvas extends JPanel {
             // seleziona il pezzo NERO
             for (Piece p : pezziNeri) {
                 if (p.getRow() == row && p.getCol() == col) {
-                    System.out.println("Hai selezionato: " + p.getClass().getName());
+                    System.out.println("Hai selezionato: " + p.getClass().getName()); // Pezzo selezionato
                     pezzoSelezionato = p;
                     return pezzoSelezionato;
                 }
             }
 
-
         }
+
         // se il pezzo non è selezionato
         System.out.println("Nessun pezzo selezionato in " + convertiMossa(row, col));
         // resetto il contatore dei click
@@ -333,6 +325,7 @@ public class Canvas extends JPanel {
 
     // metodo per muovere il pezzo
     public void muoviPezzo() {
+        // gestione timer
         if (turnoBianco) {
             tBianco.stop();
         } else {
@@ -365,7 +358,10 @@ public class Canvas extends JPanel {
             return;
         }
 
-        // VERIFICO SE IL RE È IN SCACCO E QUINDI PINNATO
+        // VERIFICO SE IL RE È IN SCACCO
+
+
+        // VERIFICO SE IL PEZZO È PINNATO
 
         // posizione iniziale del pezzo
         int oldRow = pezzoSelezionato.getRow();
@@ -373,6 +369,7 @@ public class Canvas extends JPanel {
 
         // Gestione dell'arrocco
         boolean isArrocco = false; // VALIDITÀ
+
         if (pezzoSelezionato instanceof King) {
             King re = (King) pezzoSelezionato;
 
@@ -381,14 +378,16 @@ public class Canvas extends JPanel {
                 // Determina se è arrocco corto (verso destra) o lungo (verso sinistra)
                 boolean isArroccoCorto = destinazioneCol > oldCol;
 
-                // Posizione della torre coinvolta nell'arrocco
+                // Colonna della torre coinvolta nell'arrocco
                 int torreCol;
+
                 if (isArroccoCorto) {
                     torreCol = 7;
                 } else {
                     torreCol = 0;
                 }
 
+                // Trova la torre nella posizione corretta
                 Piece possibileTorre = trovaPezzo(oldRow, torreCol); // Trovo la torre
 
                 // Verifica che ci sia una torre nella posizione corretta
@@ -400,6 +399,7 @@ public class Canvas extends JPanel {
 
                         // Verifica che non ci siano pezzi tra il re e la torre
                         boolean percorsoLibero = true;
+
                         int inizio = Math.min(oldCol, torreCol) + 1; // Inizio del percorso da controllare
                         int fine = Math.max(oldCol, torreCol); // Fine del percorso da controllare
 
@@ -461,7 +461,7 @@ public class Canvas extends JPanel {
             re.setHaMosso(true);
         }
 
-        // Se è una torre, segna che si è mossa per l'arrocco
+        // Se è una torre, segna che si è mossa (per l'arrocco)
         if (pezzoSelezionato instanceof Rook) {
             ((Rook) pezzoSelezionato).setHaMosso(true);
         }
@@ -492,6 +492,7 @@ public class Canvas extends JPanel {
 
         // Cambia turno
         turnoBianco = !turnoBianco;
+        // Incremento il numero di turni
         nTurni++;
 
         // Avvia il timer del nuovo giocatore
@@ -503,7 +504,7 @@ public class Canvas extends JPanel {
 
     }
 
-    // Metodo per verificare se una cella è occupata
+    // Metodo per mettere un pezzo nella scacchiera
     public Piece mettiPezzo(int row, int col) {
         for (Piece p : pezziBianchi) {
             if (p.getRow() == row && p.getCol() == col) {
@@ -519,6 +520,7 @@ public class Canvas extends JPanel {
         return null;
     }
 
+    // Metodo per verificare se una cella è occupata
     public boolean eOccupato(int row, int col) {
         // controlla se la cella è occupata
         return mettiPezzo(row, col) != null;
@@ -650,8 +652,8 @@ public class Canvas extends JPanel {
         return false;
     }
 
-    private boolean patta() {
-        // Patta
+    private boolean draw() {
+        // Draw
         // Da implementare
         return false;
     }
@@ -664,6 +666,8 @@ public class Canvas extends JPanel {
         }
         return false;
     }
+
+
 
 
 
